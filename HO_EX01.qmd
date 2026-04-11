@@ -1,4 +1,17 @@
 ---
 title: "Hands-on Exercise 1 110426"
 author: "Goh Fang Yu"
+date: "10 Apr 2026"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+```{r}
+pacman::p_load(tidyverse)
+
+```
 ---
