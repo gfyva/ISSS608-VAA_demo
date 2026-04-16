@@ -61,7 +61,7 @@ ggplot(data=exam_data, aes(x = MATHS)) +
 
 ### **1.4.1 A Layered Grammar of Graphics**
 
-![](images/Layered Graphics.png){width="409"}
+![](images/Layered%20Graphics.png){width="409"}
 
 ## **1.5 Essential Grammatical Elements in ggplot2: data**
 
@@ -80,7 +80,7 @@ ggplot(data=exam_data,
 
 ## **1.7 Essential Grammatical Elements in ggplot2: geom**
 
-![](images/Geometric Objects.png){width="416"}
+![](images/Geometric%20Objects.png){width="416"}
 
 ### **1.7.1 Geometric Objects: geom_bar**
 
@@ -379,3 +379,5 @@ ggplot(data=exam_data,
   theme_minimal()
 
 ```
+
+END
