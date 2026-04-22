@@ -3,3 +3,9 @@ title: "ISSS608-VAA"
 ---
 
 ### **Welcome to ISSS608 Visual Analytics and Application :)**
+
+Here's documenting my course journey:
+
+Lesson 1: Introduction to Visual Analytics
+
+Lesson 2: Designing Graphs to Enlighten

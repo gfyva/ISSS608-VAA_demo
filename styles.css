@@ -1,1 +1,7 @@
-/* css styles */
+.navbar {
+  background-color: #CFE8F3;
+}
+
+.navbar a {
+  color: grey;
+}/* css styles */
