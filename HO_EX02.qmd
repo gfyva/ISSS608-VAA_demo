@@ -61,7 +61,7 @@ ggplot(data=exam_data,
 
 ```
 
-ggrepel is an extension of ggplot2 package which provides geoms for ggplot2 to repel overlapping text.
+ggrepel is an extension of **ggplot2** package which provides geoms for **ggplot2** to repel overlapping text.
 
 We simply replace `geom_text()` by [`geom_text_repel()`](https://ggrepel.slowkow.com/reference/geom_text_repel.html) and `geom_label()` by [`geom_label_repel`](https://ggrepel.slowkow.com/reference/geom_text_repel.html).
 
@@ -84,7 +84,7 @@ ggplot(data=exam_data,
 
 ## **2.4 Beyond ggplot2 Themes**
 
-ggplot2 comes with eight [built-in themes](https://ggplot2.tidyverse.org/reference/ggtheme.html), they are: `theme_gray()`, `theme_bw()`, `theme_classic()`, `theme_dark()`, `theme_light()`, `theme_linedraw()`, `theme_minimal()`, and `theme_void()`.
+ggplot2 comes with eight [built-in themes](https://ggplot2.tidyverse.org/reference/ggtheme.html), they are: `theme_gray()`, `theme_bw()`, `theme_classic()`, `theme_dark()`, `theme_light()`, `theme_linedraw()`, `theme_minimal()`, and `theme_void()`.
 
 ```{r}
 ggplot(data=exam_data, 
@@ -278,6 +278,130 @@ The figure below is created by combining patchwork and theme_economist() of ggth
 ```{r}
 patchwork <- (p1 / p2) | p3
 patchwork & theme_economist()
+
+```
+
+## **Exploration**
+
+#### **1) Different ggplot2 themes**
+
+theme_light()
+
+```{r}
+ggplot(data=exam_data,
+       aes(x = MATHS)) +
+  geom_histogram(bins = 20,
+                 boundary = 100,
+                 color = "grey90",
+                 fill = "pink3") +
+  theme_light() +
+  ggtitle("Distribution of Maths scores")
+
+```
+
+theme_dark()
+
+```{r}
+ggplot(data=exam_data,
+       aes(x = MATHS)) +
+  geom_histogram(bins = 20,
+                 boundary = 100,
+                 color = "grey90",
+                 fill = "pink3") +
+  theme_dark() +
+  ggtitle("Distribution of Maths scores")
+
+```
+
+theme_classic()
+
+```{r}
+ggplot(data=exam_data, 
+             aes(x = MATHS)) +
+  geom_histogram(bins=20, 
+                 boundary = 100,
+                 color="grey25", 
+                 fill="grey90") +
+  theme_classic() +
+  ggtitle("Distribution of Maths scores") 
+
+```
+
+#### **2) Using different fonts for my diagram**
+
+base_family
+
+```{r}
+ggplot(data=exam_data, 
+             aes(x = MATHS)) +
+  geom_histogram(bins=20, 
+                 boundary = 100,
+                 color="grey25", 
+                 fill="grey90") +
+  ggtitle("Distribution of Maths scores") +
+  theme_ipsum(
+  base_family = "Comic Sans MS",
+  grid = ""
+)
+
+```
+
+Size & face
+
+```{r}
+ggplot(data=exam_data, 
+             aes(x = MATHS)) +
+  geom_histogram(bins=20, 
+                 boundary = 100,
+                 color="grey25", 
+                 fill="grey90") +
+  ggtitle("Distribution of Maths scores",
+  subtitle = "Based on Primary 3 year-end exam results") +
+labs(caption = "Source: exam_data.csv") +
+theme_ipsum(
+  base_family = "Times New Roman",
+  plot_title_size = 20,
+  subtitle_size = 14,
+  caption_size = 12,
+  plot_title_face = "bold",
+  caption_face = "italic"
+)
+
+```
+
+Grids in both axes
+
+```{r}
+ggplot(data=exam_data, 
+             aes(x = MATHS)) +
+  geom_histogram(bins=20, 
+                 boundary = 100,
+                 color="grey25", 
+                 fill="grey90") +
+  ggtitle("Distribution of Maths scores") +
+  theme_ipsum(axis_title_size = 18, 
+              base_size = 15, 
+              grid = "XY") 
+
+```
+
+#### **3) Changing the positioning of the three ggplot2 graphs**
+
+```{r}
+patchwork <- p3 | (p2 / p1)
+patchwork & theme_economist() +
+  theme(
+  plot.title = element_text(size = 9, face = "bold"),
+  axis.title = element_text(size = 7),
+  axis.text  = element_text(size = 6)
+)
+
+```
+
+```{r}
+patchwork <- (p1 | p2) / p3
+patchwork & theme_wsj() +
+  theme(plot.title =  element_text(hjust = 0.5, size = 10, face = "bold"))
 
 ```
 

@@ -494,4 +494,46 @@ ggplot(data=exam_data,
 
 ```
 
+## **Exploration**
+
+#### **1) Cheatsheet for ggplot2** [(source)](https://ggplot2.tidyverse.org/#cheatsheet)
+
+<iframe src="data-visualization.pdf" width="100%" height="600px">
+
+</iframe>
+
+#### **2) Experimenting geom()**
+
+Exploring a different bin value
+
+```{r}
+ggplot(data = exam_data, 
+       aes(x = MATHS)) +
+  geom_histogram(bins = 10,
+                 color="pink4",
+                 fill="pink3")
+
+```
+
+Using binwidth
+
+```{r}
+ggplot(data = exam_data, 
+       aes(x = MATHS)) +
+  geom_histogram(binwidth = 20,
+                 color="pink4",
+                 fill="pink3")
+
+```
+
+#### **3) Experimenting a different plot with facet_wrap()**
+
+```{r}
+ggplot(data=exam_data,
+       aes(x = MATHS, y = ENGLISH)) +
+  geom_point(size=0.8, colour="pink4") +
+  facet_wrap(~ CLASS)
+
+```
+
 **END**
