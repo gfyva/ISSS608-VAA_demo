@@ -9,3 +9,5 @@ Here's documenting my course journey:
 Lesson 1: Introduction to Visual Analytics
 
 Lesson 2: Designing Graphs to Enlighten
+
+Lesson 3: Interactivity in Visual Analytics: Principles and Methods

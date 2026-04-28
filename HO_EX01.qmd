@@ -14,11 +14,11 @@ execute:
 
 ## **1.1 Learning Outcomes**
 
--   Understand core concepts of ggplot2
--   Learn key components of the Grammar of Graphics
--   Apply layered approach to build visualisations
--   Create clear, functional statistical plots
--   Produce clean and effective data visualisations
+- Understand core concepts of ggplot2
+- Learn key components of the Grammar of Graphics
+- Apply layered approach to build visualisations
+- Create clear, functional statistical plots
+- Produce clean and effective data visualisations
 
 ## **1.2 Getting Started**
 
@@ -83,9 +83,9 @@ Grammar of Graphics defines the rules of structuring mathematical and aesthetic 
 
 There are two principles in Grammar of Graphics, they are:
 
--   Graphics = distinct layers of grammatical elements
+- Graphics = distinct layers of grammatical elements
 
--   Meaningful plots through aesthetic mapping
+- Meaningful plots through aesthetic mapping
 
 A good grammar of graphics will allow us to gain insight into the composition of complicated graphics, and reveal unexpected connections between seemingly different graphics (Cox 1978). It also provides a strong foundation for understanding a diverse range of graphics. Furthermore, it may also help guide us on what a well-formed or correct graphic looks like, but there will still be many grammatically correct but nonsensical graphics.
 
@@ -173,11 +173,11 @@ ggplot(data=exam_data,
 
 In the code chunk below,
 
--   *bins* argument is used to change the number of bins to 20,
+- *bins* argument is used to change the number of bins to 20,
 
--   *fill* argument is used to shade the histogram with light blue color, and
+- *fill* argument is used to shade the histogram with light blue color, and
 
--   *color* argument is used to change the outline colour of the bars in black
+- *color* argument is used to change the outline colour of the bars in black
 
 ```{r}
 ggplot(data=exam_data, 
@@ -288,17 +288,17 @@ ggplot(data=exam_data,
 
 The [Statistics functions](https://ggplot2.tidyverse.org/reference/index.html#stats) statistically transform data, usually as some form of summary. For example:
 
--   frequency of values of a variable (bar graph)
+- frequency of values of a variable (bar graph)
 
-    -   a mean
+  - a mean
 
-    -   a confidence limit
+  - a confidence limit
 
--   There are two ways to use these functions:
+- There are two ways to use these functions:
 
-    -   add a `stat_()` function and override the default geom, or
+  - add a `stat_()` function and override the default geom, or
 
-    -   add a `geom_()` function and override the default stat.
+  - add a `geom_()` function and override the default stat.
 
 ### **1.8.1 Working with `stat()`**
 
@@ -451,13 +451,13 @@ ggplot(data=exam_data,
 
 Themes control elements of the graph not related to the data. For example:
 
--   background colour
+- background colour
 
--   size of fonts
+- size of fonts
 
--   gridlines
+- gridlines
 
--   colour of labels
+- colour of labels
 
 ### **1.11.1 Working with theme**
 
