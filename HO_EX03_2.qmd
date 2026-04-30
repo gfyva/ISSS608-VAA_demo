@@ -212,7 +212,7 @@ bp
 
 #### **1) Exploring other animations of bubble plot**
 
-back-in-out
+**back-in-out**
 
 ```{r}
 ggplot(globalPop, aes(x = Old, y = Young, 
@@ -230,7 +230,7 @@ ggplot(globalPop, aes(x = Old, y = Young,
 
 ```
 
-bounce-out
+**bounce-out**
 
 ```{r}
 ggplot(globalPop, aes(x = Old, y = Young, 

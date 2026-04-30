@@ -629,7 +629,7 @@ girafe(ggobj = gg_point)
 
 #### **4) Changing the position of how we present the data**
 
-**Top and bottom**
+Top and bottom
 
 ```{r}
 p1 <- ggplot(data=exam_data, 
