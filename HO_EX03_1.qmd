@@ -541,3 +541,126 @@ crosstalk::bscols(gg,
 ```
 
 ## **Exploration**
+
+#### **1) Displaying more information on tooltip**
+
+In this example, Name, Class, Gender and Race is being displayed.
+
+```{r}
+exam_data$tooltip <- c(paste0(     
+  "Name = ", exam_data$ID,         
+  "\n Class = ", exam_data$CLASS,
+  "\n Gender = ", exam_data$GENDER,    
+  "\n Race = ", exam_data$GENDER))
+
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(
+    aes(tooltip = exam_data$tooltip), 
+    stackgroups = TRUE,
+    binwidth = 1,
+    method = "histodot") +
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+girafe(
+  ggobj = p,
+  width_svg = 8,
+  height_svg = 8*0.618
+)
+
+```
+
+#### **2) Changing the background colour and font of tooltip**
+
+Background colour of the tooltip is blue, font is white and bold and font family is sans-serif
+
+```{r}
+tooltip_css <- "background-color:blue; #<<
+font-style:bold; color:white; font-family:sans-serif" #<<
+
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(              
+    aes(tooltip = ID),                   
+    stackgroups = TRUE,                  
+    binwidth = 1,                        
+    method = "histodot") +               
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+girafe(                                  
+  ggobj = p,                             
+  width_svg = 6,
+  options = list(    #<<
+    opts_tooltip(    #<<
+      css = tooltip_css)) #<<
+) 
+
+```
+
+#### **3) Displaying other kind of Statistics on tooltip**
+
+This example shows the minimum and maximum Maths score for each class.
+
+```{r}
+tooltip <- function(ymin, ymax, accuracy = .01) {
+  max <- scales::number(ymax, accuracy = accuracy)
+  min <- scales::number(ymin, accuracy = accuracy)
+  paste("Max maths scores:", max, "\n Min maths scores:", min)
+}
+
+gg_point <- ggplot(data=exam_data, 
+                   aes(x = CLASS),
+) +
+  stat_summary(aes(y = MATHS, 
+                   tooltip = after_stat(  
+                     tooltip(ymax, ymin))),  
+    fun.data = "mean_se", 
+    geom = GeomInteractiveCol,  
+    fill = "light blue"
+  ) +
+  stat_summary(aes(y = MATHS),
+    fun.data = mean_se,
+    geom = "errorbar", width = 0.2, size = 0.2
+  )
+
+girafe(ggobj = gg_point)
+
+```
+
+#### **4) Changing the position of how we present the data**
+
+**Top and bottom**
+
+```{r}
+p1 <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(              
+    aes(data_id = ID),              
+    stackgroups = TRUE,                  
+    binwidth = 1,                        
+    method = "histodot") +  
+  coord_cartesian(xlim=c(0,100)) + 
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+
+p2 <- ggplot(data=exam_data, 
+       aes(x = ENGLISH)) +
+  geom_dotplot_interactive(              
+    aes(data_id = ID),              
+    stackgroups = TRUE,                  
+    binwidth = 1,                        
+    method = "histodot") + 
+  coord_cartesian(xlim=c(0,100)) + 
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+
+girafe(code = print(p1 / p2), 
+       width_svg = 6,
+       height_svg = 3,
+       options = list(
+         opts_hover(css = "fill: #202020;"),
+         opts_hover_inv(css = "opacity:0.2;")
+         )
+       )                                         
+
+```

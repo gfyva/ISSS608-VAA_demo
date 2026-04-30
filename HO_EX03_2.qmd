@@ -209,3 +209,79 @@ bp
 ```
 
 ## **Exploration**
+
+#### **1) Exploring other animations of bubble plot**
+
+back-in-out
+
+```{r}
+ggplot(globalPop, aes(x = Old, y = Young, 
+                      size = Population, 
+                      colour = Continent)) +
+  geom_point(alpha = 0.7, 
+             show.legend = FALSE) +
+  scale_colour_manual(values = continent_colors) +
+  scale_size(range = c(2, 12)) +
+  labs(title = 'Year: {frame_time}', 
+       x = '% Aged', 
+       y = '% Young') +
+  transition_time(Year) +       
+  ease_aes('back-in-out')            
+
+```
+
+bounce-out
+
+```{r}
+ggplot(globalPop, aes(x = Old, y = Young, 
+                      size = Population, 
+                      colour = Continent)) +
+  geom_point(alpha = 0.7, 
+             show.legend = FALSE) +
+  scale_colour_manual(values = continent_colors) +
+  scale_size(range = c(2, 12)) +
+  labs(title = 'Year: {frame_time}', 
+       x = '% Aged', 
+       y = '% Young') +
+  transition_time(Year) +       
+  ease_aes('bounce-out')            
+
+```
+
+#### **2) Creating another variation of bubble plot using plot_ly()**
+
+Tried out these few adjustments to the bubble plot:
+
+- Tooltip displayed more attributes (e.g. country, year, population)
+
+- Fixed axis ranges for animation
+
+- Marker opacity reduced to introduce transparency in overlapping bubbles
+
+```{r}
+bp <- globalPop %>%
+  plot_ly(
+    x = ~Old,
+    y = ~Young,
+    size = ~Population,
+    color = ~Continent,
+    frame = ~Year,
+    text = ~paste(
+      "Country:", Country,
+      "<br>Year:", Year,
+      "<br>Population:", Population
+    ),
+    hoverinfo = "text",
+    type = "scatter",
+    mode = "markers",
+    marker = list(opacity = 0.7)
+  ) %>%
+  layout(
+    xaxis = list(title = "Old Dependency Ratio", range = c(0, 100)),
+    yaxis = list(title = "Young Dependency Ratio", range = c(0, 100))
+  ) %>%
+  animation_opts(frame = 800)
+
+bp            
+
+```
