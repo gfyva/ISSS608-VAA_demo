@@ -14,7 +14,15 @@ website:
       - text: "Hands-on Exercise 3 Part 1  250426"
         href: "HO_EX03_1.html" 
       - text: "Hands-on Exercise 3 Part 2  250426"
-        href: "HO_EX03_2.html"         
+        href: "HO_EX03_2.html" 
+      - text: "Hands-on Exercise 4 Part 1  020526"
+        href: "HO_EX04_1.html"
+      - text: "Hands-on Exercise 4 Part 2  020526"
+        href: "HO_EX04_2.html"
+      - text: "Hands-on Exercise 4 Part 3  020526"
+        href: "HO_EX04_3.html"
+      - text: "Hands-on Exercise 4 Part 4  020526"
+        href: "HO_EX04_4.html"
     right:
       - href: index.qmd
         text: Home

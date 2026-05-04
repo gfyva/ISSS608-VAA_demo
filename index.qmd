@@ -6,8 +6,70 @@ title: "ISSS608-VAA"
 
 Here's documenting my course journey:
 
-Lesson 1: Introduction to Visual Analytics
+::: {.callout collapse="true" title="▶ Lesson 1: Introduction to Visual Analytics"}
+- Motivation of Visual Analytics
 
-Lesson 2: Designing Graphs to Enlighten
+- What Visual Analytics is
 
-Lesson 3: Interactivity in Visual Analytics: Principles and Methods
+- Visual Analytics in History
+
+- Intents of Visual Analytics Applications
+
+- Visual Analytics Techniques: basic graphical methods
+
+- Visual Analytics Tools
+:::
+
+::: {.callout collapse="true" title="▶ Lesson 2: Designing Graphs to Enlighten "}
+- Human perception and information processing
+
+- Perceptual and design principles for effective visual analytics
+
+- Principles of Graphic Design
+
+  - Rules for Encoding Values in Graph
+
+  - JunkCharts
+
+  - Practical Guides for Using Colour in Charts
+
+  - Data-ink
+:::
+
+::: {.callout collapse="true" title="▶ Lesson 3: Interactivity in Visual Analytics: Principles and Methods"}
+- Different types of interaction techniquee
+
+- The role of Interaction in visual analytics
+
+- The concept of linked multiple views
+
+- Interactive analytics best practices
+:::
+
+::: {.callout collapse="true" title="▶ Lesson 4: Fundamentals of Visual Analytics"}
+- Visual Analytics for Knowledge Discovery
+
+- Visual Analytics Approach for Statistical Testing
+
+- Visual Analytics for Building Better Models
+
+- Visualising Uncertainty
+
+  - Why Visualising Uncertainty?
+
+  - Basic Statistical Concepts Related to Uncertainty
+
+  - Univariate Graphical Methods for Visualising Uncertainty
+
+    - Error bars
+
+    - Confidence strips
+
+    - Ridge plot
+
+  - Bivariate Graphical Methods for Visualising Uncertainty
+
+    - Funnel plot
+
+- Variation and Its Discontents
+:::
