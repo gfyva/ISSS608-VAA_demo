@@ -195,3 +195,175 @@ ggbarstats(
   )
 
 ```
+
+## **Exploration**
+
+**Significant Test of Association - for Science**
+
+```{r}
+exam1 <- exam_data %>%
+  mutate(
+    SCIENCE_bins = cut(
+      SCIENCE,
+      breaks = c(0, 60, 75, 85, 100),
+      include.lowest = TRUE
+    ),
+    SCIENCE_bins = factor(
+      SCIENCE_bins,
+      levels = c("(85,100]", "(75,85]", "(60,75]", "[0,60]")
+    )
+  )
+
+```
+
+```{r}
+ggbarstats(
+  data = exam1,
+  x = SCIENCE_bins,
+  y = GENDER
+) +
+  scale_fill_manual(
+    values = c(
+      "(85,100]" = "#1B9E77",  # green
+      "(75,85]"  = "#D95F02",  # orange
+      "(60,75]"  = "#7570B3",  # purple
+      "[0,60]"   = "#E7298A"   # pink
+    )
+  )
+
+```
+
+**Significant Test of Association - for English**
+
+```{r}
+exam1 <- exam_data %>%
+  mutate(
+    ENGLISH_bins = cut(
+      ENGLISH,
+      breaks = c(0, 60, 75, 85, 100),
+      include.lowest = TRUE
+    ),
+    ENGLISH_bins = factor(
+      ENGLISH_bins,
+      levels = c("(85,100]", "(75,85]", "(60,75]", "[0,60]")
+    )
+  )
+
+```
+
+```{r}
+ggbarstats(
+  data = exam1,
+  x = ENGLISH_bins,
+  y = GENDER
+) +
+  scale_fill_manual(
+    values = c(
+      "(85,100]" = "#1B9E77",  # green
+      "(75,85]"  = "#D95F02",  # orange
+      "(60,75]"  = "#7570B3",  # purple
+      "[0,60]"   = "#E7298A"   # pink
+    )
+  )
+
+```
+
+**Combining the 3 subjects into 1 plot**
+
+**Performance Distribution by Subject and Gender**
+
+```{r}
+exam_long <- exam_data %>%
+  pivot_longer(
+    cols = c(MATHS, SCIENCE, ENGLISH),
+    names_to = "Subject",
+    values_to = "Score"
+  ) %>%
+  mutate(
+    Score_bins = cut(
+      Score,
+      breaks = c(0, 60, 75, 85, 100),
+      include.lowest = TRUE
+    ),
+    Score_bins = factor(
+      Score_bins,
+      levels = c("[0,60]", "(60,75]", "(75,85]", "(85,100]")
+    )
+  )
+
+ggplot(exam_long,
+       aes(x = GENDER, fill = Score_bins)) +
+  geom_bar(position = "fill", color = "black") +
+  facet_wrap(~ Subject) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_manual(
+    values = c(
+      "[0,60]" = "#E7298A",
+      "(60,75]" = "#7570B3",
+      "(75,85]" = "#D95F02",
+      "(85,100]" = "#1B9E77"
+    ),
+    name = "Score Bands"
+  ) +
+  labs(
+    title = "Performance Distribution by Subject and Gender",
+    x = "Gender",
+    y = "Percentage"
+  ) +
+  theme_minimal()
+
+```
+
+Observations:
+
+Among the 3 subjects, English exhibits the strongest observable relationship between gender and academic performance, while Mathematics and Science show minimal gender-based differences. The findings suggest that gender-related variation in performance is more pronounced in language-based subjects than in quantitative subjects within this dataset.
+
+**Performance Distribution by Subject and Race**
+
+```{r}
+exam_long_race <- exam_data %>%
+  pivot_longer(
+    cols = c(MATHS, SCIENCE, ENGLISH),
+    names_to = "Subject",
+    values_to = "Score"
+  ) %>%
+  mutate(
+    Score_bins = cut(
+      Score,
+      breaks = c(0, 60, 75, 85, 100),
+      include.lowest = TRUE
+    ),
+    Score_bins = factor(
+      Score_bins,
+      levels = c("[0,60]", "(60,75]", "(75,85]", "(85,100]")
+    )
+  )
+
+ggplot(exam_long_race,
+       aes(x = RACE, fill = Score_bins)) +
+  geom_bar(position = "fill", color = "black") +
+  facet_wrap(~ Subject) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_manual(
+    values = c(
+      "[0,60]" = "#E7298A",
+      "(60,75]" = "#7570B3",
+      "(75,85]" = "#D95F02",
+      "(85,100]" = "#1B9E77"
+    ),
+    name = "Score Bands"
+  ) +
+  labs(
+    title = "Performance Distribution by Subject and Race",
+    x = "Race",
+    y = "Percentage"
+  ) +
+  theme_minimal()
+
+```
+
+Observations:
+
+Across all three subjects, Chinese and “Others” generally demonstrate stronger representation in higher performance categories, while Malay students appear more concentrated within the lower score bands. English and Mathematics display more distinct differences across racial groups compared to Science.
+
+However, the chart represents proportional distributions rather than statistical significance. Therefore, while observable differences exist visually, further statistical testing would be required to determine whether these differences are statistically meaningful.

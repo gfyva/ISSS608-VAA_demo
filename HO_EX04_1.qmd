@@ -250,7 +250,3 @@ ggplot(exam,
   theme_economist()
 
 ```
-
-## **Exploration**
-
-#### **1)** 
