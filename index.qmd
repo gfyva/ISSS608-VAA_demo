@@ -73,3 +73,27 @@ Here's documenting my course journey:
 
 - Variation and Its Discontents
 :::
+
+::: {.callout collapse="true" title="▶ Lesson 5: Visual Multivariate Analysis"}
+- Correlation Matrix
+
+  - Correlogram
+
+- Multivariate Data Visualisation
+
+  - ternary plot
+
+  - Glyphs or Star Plot
+
+  - heatmap
+
+  - parallel coordinate plot
+
+  - parallel plot
+
+- Space-constrained visualization of hierarchies
+
+  - Treemaps
+
+  - Sunburst diagram
+:::
