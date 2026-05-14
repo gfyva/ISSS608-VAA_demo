@@ -18,11 +18,11 @@ By the end of this hands-on exercise, you will be able to:
 
 - Transform transaction data into a treemap-compatible structure using functions from the **dplyr** package
 
--  Prepare and manipulate hierarchical data for treemap visualisation
+- Prepare and manipulate hierarchical data for treemap visualisation
 
--  Create static treemap visualisations using the **treemap** package
+- Create static treemap visualisations using the **treemap** package
 
--  Design interactive treemap visualisations using the **d3treeR** package
+- Design interactive treemap visualisations using the **d3treeR** package
 
 ## **13.2 Installing and Launching R Packages**
 
@@ -177,7 +177,7 @@ treemap(realis2018_selected,
 
 ```
 
-Thinks to learn from the code chunk above.
+Things to learn from the code chunk above.
 
 - The rectangles are coloured with different intensity of green, reflecting their respective median unit prices.
 
@@ -231,7 +231,7 @@ treemap(realis2018_selected,
 
 Things to learn from the code chunk above:
 
-- The colour scheme used is very copnfusing. This is because mapping = (min(values), mean(range(values)), max(values)). It is not wise to use diverging colour palette such as *RdYlBu* if the values are all positive or negative
+- The colour scheme used is very confusing. This is because mapping = (min(values), mean(range(values)), max(values)). It is not wise to use diverging colour palette such as *RdYlBu* if the values are all positive or negative
 
 To overcome this problem, a single colour palette such as Blues should be used.
 
@@ -308,6 +308,16 @@ ggplot(data=realis2018_selected,
 
 ```
 
+::: callout-tip
+### Observations:
+
+- This treemap visualises property transaction data where the size of each rectangle represents the **Total Unit Sold**. Larger rectangles indicate higher sales volume.
+
+- The colour intensity represents the **Median Unit Price (\$ psm)**, with darker blue shades indicating higher property prices and lighter blue shades indicating lower
+
+- This visualisation helps identify patterns between transaction volume and pricing, highlighting which property segments are more actively traded and which command premium prices.
+:::
+
 ### **13.5.2 Defining hierarchy**
 
 Group by Planning Region
@@ -322,6 +332,14 @@ ggplot(data=realis2018_selected,
 
 ```
 
+::: callout-tip
+### Observations:
+
+- This treemap groups property transactions by **Planning Region**, where the size of each rectangle represents the **Total Unit Sold**. Larger blocks indicate regions or developments with higher transaction volumes.
+- The colour intensity reflects the **Median Unit Price (\$ psm)**, with lighter blue shades indicating higher-priced properties and darker blue shades representing relatively lower-priced properties.
+- This visualisation highlights differences in both transaction activity and pricing across planning regions, allowing easier identification of regions with strong sales activity and premium property values.
+:::
+
 Group by Planning Area
 
 ```{r}
@@ -333,6 +351,14 @@ ggplot(data=realis2018_selected,
   geom_treemap()
 
 ```
+
+::: callout-tip
+### Observations:
+
+- This treemap visualises property transactions grouped by both **Planning Region** and **Planning Area**, providing a more detailed hierarchical view of the housing market structure.
+- Compared to the previous treemap grouped only by Planning Region, this visualisation introduces an additional grouping by Planning Area, providing a more detailed hierarchical view of transaction volume and pricing differences within each region.
+- This allows for finer comparison of local property market patterns and identification of high-value planning areas.
+:::
 
 Adding boundary line
 
@@ -348,6 +374,14 @@ ggplot(data=realis2018_selected,
   geom_treemap_subgroup_border(colour = "gray20")
 
 ```
+
+::: callout-tip
+### Observations:
+
+- The addition of subgroup boundary lines improves the separation between regions and planning areas, making the hierarchical structure and clustering patterns easier to distinguish visually.
+- Compared to the previous treemap, this version provides clearer visual organisation and readability by introducing explicit borders between groups. 
+- This enhances interpretation of regional transaction patterns and pricing differences while reducing visual clutter between adjacent areas.
+:::
 
 ## **13.6 Designing Interactive Treemap using d3treeR**
 

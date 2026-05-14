@@ -69,7 +69,15 @@ ggparcoord(data = wh,
            scale = "uniminmax",
            alphaLines = 0.2,
            boxplot = TRUE, 
-           title = "Parallel Coordinates Plot of World Happines Variables")
+           title = "Parallel Coordinates Plot of World Happines Variables"
+) +
+theme(
+  axis.text.x = element_text(
+    angle = 45,
+    hjust = 1,
+    size = 8
+  )
+)
 
 ```
 
@@ -143,6 +151,39 @@ ggparcoord(data = wh,
 
 ```
 
+### **Exploration**
+
+**Further adjustments to the plot**
+
+```{r}
+#| fig-width: 14
+#| fig-height: 20
+
+ggparcoord(
+  data = wh,
+  columns = c(7:12),
+  groupColumn = 2,
+  scale = "uniminmax",
+  alphaLines = 0.2,
+  boxplot = TRUE,
+  title = "Multiple Parallel Coordinates Plots of World Happiness Variables by Region"
+) +
+facet_wrap(~ Region, scales = "free_x") +
+theme(
+  axis.text.x = element_text(
+    angle = 60,
+    hjust = 1,
+    size = 10
+  ),
+  strip.text = element_text(size = 10),
+  plot.title = element_text(size = 14),
+  legend.text = element_text(size = 10),
+  legend.title = element_text(size = 12),
+  legend.position = "bottom"
+)
+
+```
+
 ## **12.5 Plotting Interactive Parallel Coordinates Plot: parallelPlot methods**
 
 [**parallelPlot**](https://cran.r-project.org/web/packages/parallelPlot/) is an R package specially designed to plot a parallel coordinates plot by using ‘htmlwidgets’ package and [d3.js](https://d3js.org/). In this section, you will learn how to use functions provided in parallelPlot package to build interactive parallel coordinates plot.
@@ -172,7 +213,7 @@ parallelPlot(wh,
 
 ```
 
-One of the useful interactive feature of parallelPlot is we can click on a variable of interest, for example Happiness score, the monotonous blue colour (default) will change a blues with different intensity colour scheme will be used.
+One of the useful interactive feature of parallelPlot is we can click on a variable of interest, for example Happiness score, the monotonous blue colour (default) will change a blue with different intensity colour scheme will be used.
 
 ### **12.5.3 Changing the colour scheme**
 
