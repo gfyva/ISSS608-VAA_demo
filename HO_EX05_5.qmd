@@ -379,7 +379,7 @@ ggplot(data=realis2018_selected,
 ### Observations:
 
 - The addition of subgroup boundary lines improves the separation between regions and planning areas, making the hierarchical structure and clustering patterns easier to distinguish visually.
-- Compared to the previous treemap, this version provides clearer visual organisation and readability by introducing explicit borders between groups. 
+- Compared to the previous treemap, this version provides clearer visual organisation and readability by introducing explicit borders between groups.
 - This enhances interpretation of regional transaction patterns and pricing differences while reducing visual clutter between adjacent areas.
 :::
 
