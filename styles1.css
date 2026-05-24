@@ -1,0 +1,16 @@
+.footer {
+  position: fixed;
+  bottom: 12px;
+  right: 20px;
+  font-size: 0.45em;
+  color: #666666;
+}
+
+.footer a {
+  text-decoration: none;
+  color: #666666;
+}
+
+.footer a:hover {
+  color: #1f77b4;
+}

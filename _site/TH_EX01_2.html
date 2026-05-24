@@ -9,7 +9,7 @@
 <meta name="author" content="Goh Fang Yu">
 <meta name="dcterms.date" content="2026-05-09">
 
-<title>Take-Home Exercise 1 – ISSS608-VAA</title>
+<title>Take-Home Exercise 1 Technical Report – ISSS608-VAA</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -229,7 +229,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#visual-analytics-for-data-discovery" id="toc-visual-analytics-for-data-discovery" class="nav-link active" data-scroll-target="#visual-analytics-for-data-discovery"><strong>Visual Analytics for Data Discovery</strong></a>
+  <li><a href="#visual-analytics-for-data-discovery-motor-insurance-portfolio-analysis" id="toc-visual-analytics-for-data-discovery-motor-insurance-portfolio-analysis" class="nav-link active" data-scroll-target="#visual-analytics-for-data-discovery-motor-insurance-portfolio-analysis"><strong>Visual Analytics for Data Discovery: Motor Insurance Portfolio Analysis</strong></a>
   <ul class="collapse">
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><strong>1 Introduction</strong></a></li>
   <li><a href="#data-description" id="toc-data-description" class="nav-link" data-scroll-target="#data-description"><strong>2 Data Description</strong></a></li>
@@ -248,26 +248,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#bivariate-visual-analysis" id="toc-bivariate-visual-analysis" class="nav-link" data-scroll-target="#bivariate-visual-analysis"><strong>6 Bivariate Visual Analysis</strong></a>
   <ul class="collapse">
-  <li><a href="#claim-severity-vs-driver-age-group" id="toc-claim-severity-vs-driver-age-group" class="nav-link" data-scroll-target="#claim-severity-vs-driver-age-group">6.1 Claim Severity VS Driver Age Group</a></li>
-  <li><a href="#total-premium-vs-total-incurred-claims" id="toc-total-premium-vs-total-incurred-claims" class="nav-link" data-scroll-target="#total-premium-vs-total-incurred-claims">6.2 Total Premium VS Total Incurred Claims</a></li>
+  <li><a href="#claim-severity" id="toc-claim-severity" class="nav-link" data-scroll-target="#claim-severity">6.1 Claim Severity VS Driver Age Group</a></li>
+  <li><a href="#total-premium" id="toc-total-premium" class="nav-link" data-scroll-target="#total-premium">6.2 Total Premium VS Total Incurred Claims</a></li>
   <li><a href="#profitability-group-vs-business-type" id="toc-profitability-group-vs-business-type" class="nav-link" data-scroll-target="#profitability-group-vs-business-type">6.3 Profitability Group VS Business Type</a></li>
   <li><a href="#high-risk-vs-policy-status" id="toc-high-risk-vs-policy-status" class="nav-link" data-scroll-target="#high-risk-vs-policy-status">6.4 High Risk VS Policy Status</a></li>
-  <li><a href="#average-loss-ratio-by-policy-type-and-business-type" id="toc-average-loss-ratio-by-policy-type-and-business-type" class="nav-link" data-scroll-target="#average-loss-ratio-by-policy-type-and-business-type">6.5 Average Loss Ratio by Policy Type and Business Type</a></li>
+  <li><a href="#average-loss" id="toc-average-loss" class="nav-link" data-scroll-target="#average-loss">6.5 Average Loss Ratio by Policy Type and Business Type</a></li>
   <li><a href="#portfolio-composition-by-policy-type-and-profitability" id="toc-portfolio-composition-by-policy-type-and-profitability" class="nav-link" data-scroll-target="#portfolio-composition-by-policy-type-and-profitability">6.6 Portfolio Composition by Policy Type and Profitability</a></li>
   </ul></li>
   <li><a href="#multivariate-visual-analysis" id="toc-multivariate-visual-analysis" class="nav-link" data-scroll-target="#multivariate-visual-analysis"><strong>7 Multivariate Visual Analysis</strong></a>
   <ul class="collapse">
-  <li><a href="#correlation-heatmap-of-key-insurance-portfolio-variables" id="toc-correlation-heatmap-of-key-insurance-portfolio-variables" class="nav-link" data-scroll-target="#correlation-heatmap-of-key-insurance-portfolio-variables">7.1 Correlation Heatmap of Key Insurance Portfolio Variables</a></li>
-  <li><a href="#pairwise-relationship-analysis-of-key-insurance-portfolio-variables" id="toc-pairwise-relationship-analysis-of-key-insurance-portfolio-variables" class="nav-link" data-scroll-target="#pairwise-relationship-analysis-of-key-insurance-portfolio-variables">7.2 Pairwise Relationship Analysis of Key Insurance Portfolio Variables</a></li>
+  <li><a href="#correlation-heatmap" id="toc-correlation-heatmap" class="nav-link" data-scroll-target="#correlation-heatmap">7.1 Correlation Heatmap of Key Insurance Portfolio Variables</a></li>
+  <li><a href="#pairwise" id="toc-pairwise" class="nav-link" data-scroll-target="#pairwise">7.2 Pairwise Relationship Analysis of Key Insurance Portfolio Variables</a></li>
   <li><a href="#cluster-analysis-of-insurance-policy-risk-profiles" id="toc-cluster-analysis-of-insurance-policy-risk-profiles" class="nav-link" data-scroll-target="#cluster-analysis-of-insurance-policy-risk-profiles">7.3 Cluster Analysis of Insurance Policy Risk Profiles</a></li>
+  <li><a href="#stats" id="toc-stats" class="nav-link" data-scroll-target="#stats">7.4 Statistical Validation of Underwriting Profit Drivers</a></li>
   </ul></li>
-  <li><a href="#recommendations-to-increase-profitability-and-reduce-losses" id="toc-recommendations-to-increase-profitability-and-reduce-losses" class="nav-link" data-scroll-target="#recommendations-to-increase-profitability-and-reduce-losses"><strong>8 Recommendations to Increase Profitability and Reduce Losses</strong></a>
+  <li><a href="#recommendations" id="toc-recommendations" class="nav-link" data-scroll-target="#recommendations"><strong>8 Recommendations to Increase Profitability and Reduce Losses</strong></a>
   <ul class="collapse">
-  <li><a href="#strengthen-underwriting-controls-for-high-risk-segments" id="toc-strengthen-underwriting-controls-for-high-risk-segments" class="nav-link" data-scroll-target="#strengthen-underwriting-controls-for-high-risk-segments">1. Strengthen Underwriting Controls for High-Risk Segments</a></li>
-  <li><a href="#improve-pricing-and-risk-based-premium-allocation" id="toc-improve-pricing-and-risk-based-premium-allocation" class="nav-link" data-scroll-target="#improve-pricing-and-risk-based-premium-allocation">2. Improve Pricing and Risk-Based Premium Allocation</a></li>
-  <li><a href="#focus-on-claim-severity-management" id="toc-focus-on-claim-severity-management" class="nav-link" data-scroll-target="#focus-on-claim-severity-management">3. Focus on Claim Severity Management</a></li>
-  <li><a href="#enhance-portfolio-segmentation" id="toc-enhance-portfolio-segmentation" class="nav-link" data-scroll-target="#enhance-portfolio-segmentation">4. Enhance Portfolio Segmentation</a></li>
-  <li><a href="#monitor-high-risk-policies-continuously" id="toc-monitor-high-risk-policies-continuously" class="nav-link" data-scroll-target="#monitor-high-risk-policies-continuously">5. Monitor High-Risk Policies Continuously</a></li>
+  <li><a href="#strengthen-underwriting-controls-for-high-risk-segments" id="toc-strengthen-underwriting-controls-for-high-risk-segments" class="nav-link" data-scroll-target="#strengthen-underwriting-controls-for-high-risk-segments">Strengthen Underwriting Controls for High-Risk Segments</a></li>
+  <li><a href="#improve-pricing-and-risk-based-premium-allocation" id="toc-improve-pricing-and-risk-based-premium-allocation" class="nav-link" data-scroll-target="#improve-pricing-and-risk-based-premium-allocation">Improve Pricing and Risk-Based Premium Allocation</a></li>
+  <li><a href="#focus-on-claim-severity-management" id="toc-focus-on-claim-severity-management" class="nav-link" data-scroll-target="#focus-on-claim-severity-management">Focus on Claim Severity Management</a></li>
+  <li><a href="#enhance-portfolio-segmentation" id="toc-enhance-portfolio-segmentation" class="nav-link" data-scroll-target="#enhance-portfolio-segmentation">Enhance Portfolio Segmentation</a></li>
+  <li><a href="#monitor-high-risk-policies-continuously" id="toc-monitor-high-risk-policies-continuously" class="nav-link" data-scroll-target="#monitor-high-risk-policies-continuously">Monitor High-Risk Policies Continuously</a></li>
   </ul></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><strong>9 Conclusion</strong></a></li>
   </ul></li>
@@ -279,7 +280,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Take-Home Exercise 1</h1>
+<h1 class="title">Take-Home Exercise 1 Technical Report</h1>
 </div>
 
 
@@ -303,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">May 21, 2026</p>
+      <p class="date-modified">May 24, 2026</p>
     </div>
   </div>
     
@@ -314,8 +315,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="visual-analytics-for-data-discovery" class="level1">
-<h1><strong>Visual Analytics for Data Discovery</strong></h1>
+<section id="visual-analytics-for-data-discovery-motor-insurance-portfolio-analysis" class="level1">
+<h1><strong>Visual Analytics for Data Discovery: Motor Insurance Portfolio Analysis</strong></h1>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction"><strong>1 Introduction</strong></h2>
 <p>Insurance companies often face challenges in identifying the underlying causes of poor profitability and high portfolio volatility. While traditional reporting tools provide summary-level insights, they may not fully reveal hidden patterns, risk drivers, or relationships within large and complex insurance datasets. As a result, insurers increasingly rely on visual analytics techniques to support more effective exploratory analysis and data-driven decision-making.</p>
@@ -1054,8 +1055,8 @@ $ liability_exposure          &lt;dbl&gt; 0.09863014, 1.00000000, 1.00000000, 1.
 <section id="bivariate-visual-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="bivariate-visual-analysis"><strong>6 Bivariate Visual Analysis</strong></h2>
 <p>Bivariate visual analysis was conducted to examine the relationships and interactions between key variables within the motor insurance portfolio dataset in order to identify factors influencing profitability and claims volatility. Through the use of comparative and relationship-based visual analytics techniques, the analysis explores how variables such as policy type, business type, claim severity, loss ratio, and risk category are associated with underwriting performance and portfolio risk exposure. This helps uncover hidden patterns, segment differences, correlations, and high-risk areas that support more effective underwriting, pricing, and risk management decisions.</p>
-<section id="claim-severity-vs-driver-age-group" class="level3">
-<h3 class="anchored" data-anchor-id="claim-severity-vs-driver-age-group">6.1 Claim Severity VS Driver Age Group</h3>
+<section id="claim-severity" class="level3">
+<h3 class="anchored" data-anchor-id="claim-severity">6.1 Claim Severity VS Driver Age Group</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>View Code</summary>
@@ -1113,8 +1114,8 @@ $ liability_exposure          &lt;dbl&gt; 0.09863014, 1.00000000, 1.00000000, 1.
 </div>
 </div>
 </section>
-<section id="total-premium-vs-total-incurred-claims" class="level3">
-<h3 class="anchored" data-anchor-id="total-premium-vs-total-incurred-claims">6.2 Total Premium VS Total Incurred Claims</h3>
+<section id="total-premium" class="level3">
+<h3 class="anchored" data-anchor-id="total-premium">6.2 Total Premium VS Total Incurred Claims</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>View Code</summary>
@@ -1299,8 +1300,8 @@ $ liability_exposure          &lt;dbl&gt; 0.09863014, 1.00000000, 1.00000000, 1.
 </div>
 </div>
 </section>
-<section id="average-loss-ratio-by-policy-type-and-business-type" class="level3">
-<h3 class="anchored" data-anchor-id="average-loss-ratio-by-policy-type-and-business-type">6.5 Average Loss Ratio by Policy Type and Business Type</h3>
+<section id="average-loss" class="level3">
+<h3 class="anchored" data-anchor-id="average-loss">6.5 Average Loss Ratio by Policy Type and Business Type</h3>
 <p>“Where are the risky combinations?”</p>
 <div class="cell">
 <details class="code-fold">
@@ -1435,8 +1436,8 @@ $ liability_exposure          &lt;dbl&gt; 0.09863014, 1.00000000, 1.00000000, 1.
 </section>
 <section id="multivariate-visual-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="multivariate-visual-analysis"><strong>7 Multivariate Visual Analysis</strong></h2>
-<section id="correlation-heatmap-of-key-insurance-portfolio-variables" class="level3">
-<h3 class="anchored" data-anchor-id="correlation-heatmap-of-key-insurance-portfolio-variables">7.1 Correlation Heatmap of Key Insurance Portfolio Variables</h3>
+<section id="correlation-heatmap" class="level3">
+<h3 class="anchored" data-anchor-id="correlation-heatmap">7.1 Correlation Heatmap of Key Insurance Portfolio Variables</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>View Code</summary>
@@ -1498,8 +1499,8 @@ $ liability_exposure          &lt;dbl&gt; 0.09863014, 1.00000000, 1.00000000, 1.
 </div>
 </div>
 </section>
-<section id="pairwise-relationship-analysis-of-key-insurance-portfolio-variables" class="level3">
-<h3 class="anchored" data-anchor-id="pairwise-relationship-analysis-of-key-insurance-portfolio-variables">7.2 Pairwise Relationship Analysis of Key Insurance Portfolio Variables</h3>
+<section id="pairwise" class="level3">
+<h3 class="anchored" data-anchor-id="pairwise">7.2 Pairwise Relationship Analysis of Key Insurance Portfolio Variables</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>View Code</summary>
@@ -1602,34 +1603,94 @@ $ liability_exposure          &lt;dbl&gt; 0.09863014, 1.00000000, 1.00000000, 1.
 </ul>
 </div>
 </div>
+</section>
+<section id="stats" class="level3">
+<h3 class="anchored" data-anchor-id="stats">7.4 Statistical Validation of Underwriting Profit Drivers</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>View Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  underwriting_profit <span class="sc">~</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    total_incurred <span class="sc">+</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    loss_ratio <span class="sc">+</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    claim_frequency <span class="sc">+</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    claim_severity,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> motor_clean</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = underwriting_profit ~ total_incurred + loss_ratio + 
+    claim_frequency + claim_severity, data = motor_clean)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2241.2  -174.4   -68.8   102.0  4685.0 
+
+Coefficients:
+                  Estimate Std. Error  t value Pr(&gt;|t|)    
+(Intercept)      4.267e+02  1.425e+00   299.33   &lt;2e-16 ***
+total_incurred  -9.861e-01  5.510e-04 -1789.73   &lt;2e-16 ***
+loss_ratio      -6.527e-01  2.934e-02   -22.25   &lt;2e-16 ***
+claim_frequency -4.074e+00  2.624e-01   -15.53   &lt;2e-16 ***
+claim_severity  -1.670e-02  9.732e-04   -17.16   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 278.9 on 50801 degrees of freedom
+  (303334 observations deleted due to missingness)
+Multiple R-squared:  0.9977,    Adjusted R-squared:  0.9977 
+F-statistic: 5.574e+06 on 4 and 50801 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Observations:
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>The regression analysis indicates that all selected variables are statistically significant predictors of underwriting profit, as all p-values are below 0.001. Total incurred claims exhibit the strongest negative effect on underwriting profit, suggesting that higher claims costs substantially reduce portfolio profitability. Loss ratio also demonstrates a significant negative relationship, indicating that policies with higher claims relative to premiums contribute negatively to underwriting performance. Similarly, higher claim frequency and claim severity are associated with lower underwriting profit, confirming that both the occurrence and magnitude of claims influence portfolio volatility and profitability.</p></li>
+<li><p>The model achieves an exceptionally high adjusted R-squared value of 0.9977, indicating that the selected variables explain nearly all variation in underwriting profit within the dataset. Overall, the findings statistically validate that claims-related variables, particularly total incurred claims and loss ratio, are the primary drivers of underwriting profitability and risk exposure in the insurance portfolio.</p></li>
+</ul>
+</div>
+</div>
 <p><strong>Overall Insights</strong></p>
 <p>The multivariate visual analytics revealed several important relationships influencing the profitability and volatility of the motor insurance portfolio. The correlation heatmap and pairwise relationship analysis showed that total incurred claims, claim severity, and loss ratio exhibit strong positive relationships, indicating that severe claim events are among the primary drivers of underwriting losses and portfolio volatility. In particular, claim severity demonstrated a strong negative relationship with underwriting profit, suggesting that a relatively small number of high-cost claims can significantly reduce portfolio profitability.</p>
+<p>These findings were further statistically validated through regression analysis. The regression results confirmed that total incurred claims, loss ratio, claim frequency, and claim severity are all statistically significant predictors of underwriting profit, with p-values below 0.001. Among these variables, total incurred claims showed the strongest negative effect on profitability, while higher loss ratios and claim severity also substantially reduced underwriting performance. The exceptionally high adjusted R-squared value indicates that the selected risk variables explain a large proportion of variation in underwriting profit.</p>
 <p>The heatmap and treemap analyses further highlighted that certain combinations of policy type and business type contribute disproportionately to underwriting risk. Policies under COMP_N and business type P recorded the highest average loss ratios, indicating weaker profitability performance within these segments. In contrast, CC and TP policies generally exhibited lower loss ratios and comparatively more stable underwriting outcomes.</p>
 <p>The cluster analysis revealed that the insurance portfolio can be segmented into distinct customer risk groups based on variables such as premium size, incurred claims, claim severity, and loss ratio. While the majority of policies belong to relatively stable and profitable clusters, a smaller group of policies demonstrates substantially higher claims severity and underwriting volatility. These findings suggest that portfolio risk is concentrated within specific high-risk segments rather than being evenly distributed across all policies.</p>
-<p>Overall, the analysis indicates that underwriting profitability is influenced not only by premium size, but also by the interaction between policy type, customer risk profile, claim severity, and claims behaviour. The results demonstrate the value of visual analytics in uncovering hidden risk concentrations and supporting more targeted underwriting and portfolio management strategies.</p>
+<p>Overall, the analysis indicates that underwriting profitability is influenced not only by premium size, but also by the interaction between policy type, customer risk profile, claim severity, and claims behaviour. The results demonstrate the value of combining visual analytics with statistical validation techniques to uncover hidden risk concentrations and support more targeted underwriting, pricing, and portfolio management strategies.</p>
 </section>
 </section>
-<section id="recommendations-to-increase-profitability-and-reduce-losses" class="level2">
-<h2 class="anchored" data-anchor-id="recommendations-to-increase-profitability-and-reduce-losses"><strong>8 Recommendations to Increase Profitability and Reduce Losses</strong></h2>
+<section id="recommendations" class="level2">
+<h2 class="anchored" data-anchor-id="recommendations"><strong>8 Recommendations to Increase Profitability and Reduce Losses</strong></h2>
 <p>Based on the visual analytics findings, several strategies may help improve portfolio profitability and reduce underwriting volatility.</p>
 <section id="strengthen-underwriting-controls-for-high-risk-segments" class="level3">
-<h3 class="anchored" data-anchor-id="strengthen-underwriting-controls-for-high-risk-segments">1. Strengthen Underwriting Controls for High-Risk Segments</h3>
+<h3 class="anchored" data-anchor-id="strengthen-underwriting-controls-for-high-risk-segments">Strengthen Underwriting Controls for High-Risk Segments</h3>
 <p>Policy segments such as COMP_N under business type P exhibited relatively high average loss ratios and may require closer underwriting review. The insurer could introduce stricter risk assessment criteria, tighter acceptance thresholds, or enhanced customer screening for these segments.</p>
 </section>
 <section id="improve-pricing-and-risk-based-premium-allocation" class="level3">
-<h3 class="anchored" data-anchor-id="improve-pricing-and-risk-based-premium-allocation">2. Improve Pricing and Risk-Based Premium Allocation</h3>
+<h3 class="anchored" data-anchor-id="improve-pricing-and-risk-based-premium-allocation">Improve Pricing and Risk-Based Premium Allocation</h3>
 <p>The strong relationship between incurred claims, claim severity, and underwriting losses suggests that certain high-risk policies may not be priced adequately relative to their expected claims exposure. Risk-based pricing models incorporating driver age, claims behaviour, and policy characteristics could help better align premiums with underlying risk levels.</p>
 </section>
 <section id="focus-on-claim-severity-management" class="level3">
-<h3 class="anchored" data-anchor-id="focus-on-claim-severity-management">3. Focus on Claim Severity Management</h3>
+<h3 class="anchored" data-anchor-id="focus-on-claim-severity-management">Focus on Claim Severity Management</h3>
 <p>Since severe claims contribute disproportionately to underwriting losses, the insurer should prioritise claim severity management through fraud detection, early claims intervention, repair cost controls, and enhanced claims investigation procedures. Reducing large claim events may significantly improve overall portfolio profitability.</p>
 </section>
 <section id="enhance-portfolio-segmentation" class="level3">
-<h3 class="anchored" data-anchor-id="enhance-portfolio-segmentation">4. Enhance Portfolio Segmentation</h3>
+<h3 class="anchored" data-anchor-id="enhance-portfolio-segmentation">Enhance Portfolio Segmentation</h3>
 <p>The cluster analysis demonstrates that policyholders can be segmented into distinct behavioural and risk groups. Leveraging advanced segmentation techniques may allow the insurer to design more targeted underwriting, pricing, and retention strategies for different customer segments.</p>
 </section>
 <section id="monitor-high-risk-policies-continuously" class="level3">
-<h3 class="anchored" data-anchor-id="monitor-high-risk-policies-continuously">5. Monitor High-Risk Policies Continuously</h3>
+<h3 class="anchored" data-anchor-id="monitor-high-risk-policies-continuously">Monitor High-Risk Policies Continuously</h3>
 <p>Although high-risk policies form a relatively small proportion of the portfolio, they contribute disproportionately to volatility and losses. Continuous monitoring using visual analytics dashboards and predictive models may help identify deteriorating risk segments earlier and support proactive risk mitigation decisions.</p>
 </section>
 </section>
@@ -1637,7 +1698,8 @@ $ liability_exposure          &lt;dbl&gt; 0.09863014, 1.00000000, 1.00000000, 1.
 <h2 class="anchored" data-anchor-id="conclusion"><strong>9 Conclusion</strong></h2>
 <p>This study demonstrates how visual analytics techniques can provide meaningful insights into the profitability and volatility of a motor insurance portfolio beyond conventional dashboard reporting. Through the application of univariate, bivariate, and multivariate visual analytics methods, the analysis successfully identified important patterns, relationships, and risk concentrations within the dataset.</p>
 <p>The findings reveal that the portfolio is generally profitable overall, with most policies maintaining manageable loss ratios and stable underwriting performance. However, a smaller number of high-risk policies and severe claim events contribute disproportionately to underwriting volatility and financial losses. Variables such as claim severity, policy type, business type, and customer risk characteristics were found to significantly influence portfolio profitability.</p>
-<p>The use of visual analytics techniques including heatmaps, treemaps, correlation analysis, pairwise relationship plots, and clustering enabled the identification of hidden relationships and high-risk portfolio segments that may not be easily observable through traditional reporting methods. These insights may support insurers in improving underwriting strategy, pricing optimisation, risk segmentation, and claims management practices.</p>
+<p>These visual findings were further supported through statistical validation using regression analysis. The regression results confirmed that total incurred claims, loss ratio, claim frequency, and claim severity are statistically significant predictors of underwriting profit, with all variables demonstrating strong significance levels. In particular, total incurred claims and loss ratio exhibited the strongest negative impact on profitability, reinforcing the conclusion that claims-related factors are the primary drivers of underwriting volatility and financial performance.</p>
+<p>The use of visual analytics techniques including heatmaps, treemaps, correlation analysis, pairwise relationship plots, clustering, and regression analysis enabled the identification of hidden relationships and high-risk portfolio segments that may not be easily observable through traditional reporting methods. These insights may support insurers in improving underwriting strategy, pricing optimisation, risk segmentation, and claims management practices, ultimately contributing to more sustainable portfolio profitability and enhanced risk management decisions.</p>
 
 
 </section>

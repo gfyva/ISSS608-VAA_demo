@@ -1,4 +1,972 @@
 ---
-title: "TH_EX01"
-format: html
+title: "Take-Home Exercise 1 Executive Summary"
+author: "Goh Fang Yu"
+date: "9 May 2026"
+date-modified: "last-modified"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    toc: false
+    preview-links: auto
+css: styles1.css
 ---
+
+## **Visual Analytics for Data Discovery:**
+
+### **Motor Insurance Portfolio Analysis**
+
+<br><br>
+
+ISSS608 Visual Analytics Assignment 1\
+Goh Fang Yu\
+May 2026
+
+::: notes
+This presentation summarises the visual analytics investigation performed on a real-world motor insurance portfolio dataset. The analysis applies univariate, bivariate, and multivariate visual analytics techniques using R and ggplot2 to explore profitability, claims behaviour, and underwriting risk patterns within the insurance portfolio. The objective is to identify meaningful insights that can support better underwriting decisions, portfolio segmentation, pricing optimisation, and risk management strategies.
+:::
+
+## **Contents**
+
+1.  Introduction & Objectives
+
+2.  Dataset & Feature Engineering
+
+3.  Univariate Analysis
+
+4.  Bivariate Analysis
+
+5.  Multivariate Analysis
+
+6.  Key Insights
+
+7.  Business Recommendations
+
+8.  Conclusion
+
+::: notes
+This presentation begins with the background and objectives of the study, followed by an overview of the dataset and feature engineering process. The presentation then discusses findings from univariate, bivariate, and multivariate visual analytics techniques. Finally, the presentation concludes with overall portfolio insights, strategic business recommendations, and concluding remarks regarding the role of visual analytics in supporting insurance decision-making.
+:::
+
+## **Introduction & Objectives**
+
+<br>
+
+::: {style="font-size: 65%;"}
+### Introduction
+
+- Insurance portfolios often contain hidden profitability and volatility drivers
+
+- Traditional dashboards may not fully reveal complex relationships
+
+- Visual analytics helps uncover hidden patterns and risk concentrations
+
+### Objectives
+
+- Explore numerical and categorical variables
+
+- Identify factors influencing profitability and claims volatility
+
+- Support underwriting and portfolio management decisions
+:::
+
+::: footer
+[📄 Introduction](TH_EX01_2.html#introduction)
+:::
+
+::: notes
+Insurance companies frequently face difficulties identifying the root causes of underwriting losses and portfolio volatility. Traditional dashboard reporting often focuses on summary statistics and may fail to reveal deeper relationships hidden within complex insurance datasets. This study applies visual analytics techniques to explore customer behaviour, claims performance, underwriting profitability, and risk exposure within a motor insurance portfolio. The analysis aims to uncover meaningful patterns that may support pricing optimisation, underwriting decisions, and portfolio risk management.
+:::
+
+## **Dataset & Feature Engineering**
+
+<br>
+
+```{r}
+pacman::p_load(tidyverse, ggplot2, scales, ggdist, ggridges, ggstatsplot, DT, dplyr, treemapify, corrplot, GGally, factoextra, patchwork, ggplotify) 
+
+```
+
+```{r}
+motor <- read_delim(
+  "Assignment1/Dataset of motor insurance portfolio.csv",
+  delim = ";"
+) 
+
+```
+
+```{r}
+motor_clean <- motor %>%
+  mutate(across(where(is.character), as.factor))
+
+```
+
+```{r}
+motor_clean <- motor_clean %>%
+  mutate(
+    loss_ratio = ifelse(total_premium > 0,
+                        total_incurred / total_premium,
+                        NA),
+
+    claim_frequency = ifelse(total_exposure > 0,
+                             total_claims / total_exposure,
+                             NA),
+
+    claim_severity = ifelse(total_claims > 0,
+                            total_incurred / total_claims,
+                            NA),
+
+    underwriting_profit =
+      total_premium - total_incurred
+  ) 
+
+```
+
+```{r}
+motor_clean <- motor_clean %>%
+  mutate(
+
+    # Profitability Group
+    profitability_group = case_when(
+      loss_ratio < 0.6 ~ "Profitable",
+      loss_ratio < 1 ~ "Moderate",
+      TRUE ~ "Loss Making"
+    ),
+
+    # Driver Age Group
+    driver_age_group = case_when(
+      driver_age < 25 ~ "Young",
+      driver_age < 60 ~ "Adult",
+      TRUE ~ "Senior"
+    ),
+
+    # High Risk Indicator
+    high_risk = ifelse(
+      loss_ratio > 1,
+      "High Risk",
+      "Normal"
+    )
+
+  ) 
+
+```
+
+::: {style="font-size: 65%;"}
+### Dataset Overview
+
+- 354,140 insurance policy records
+
+- 47 variables
+
+- Numerical and categorical insurance attributes
+
+### Derived Variables
+
+- Loss Ratio
+
+- Claim Frequency
+
+- Claim Severity
+
+- Underwriting Profit
+
+- Profitability Group
+
+- High-Risk Indicator
+:::
+
+::: footer
+[📄 Data Wrangling](TH_EX01_2.html#data-wrangling)
+:::
+
+::: notes
+The dataset contains over 354,000 motor insurance policy records with variables related to premiums, claims, customer demographics, and vehicle characteristics. Several engineered variables were created to enhance the analytical value of the dataset. Loss ratio measures underwriting profitability, claim frequency measures claims occurrence rate, and claim severity measures average claim cost. Additional segmentation variables such as profitability group and high-risk indicator were also derived to support deeper portfolio analysis and underwriting evaluation.
+:::
+
+## [Univariate Visual Analysis: Financial Variables]{style="font-size:0.8em;"}
+
+```{r}
+plot1 <- ggplot(motor_clean, aes(x = "", y = total_premium)) +
+  geom_violin(fill = "lightblue", alpha = 0.6) +
+  geom_boxplot(width = 0.15, fill = "white", outlier.alpha = 0.2) +
+  scale_y_continuous(labels = comma) +
+  labs(
+    title = "Distribution of Total Premium",
+    x = "",
+    y = "Total Premium"
+  ) +
+  theme_minimal()
+
+plot2 <- ggplot(motor_clean, aes(x = "", y = total_incurred)) +
+  geom_violin(fill = "lightblue", alpha = 0.6) +
+  geom_boxplot(width = 0.15, fill = "white", outlier.alpha = 0.2) +
+  coord_cartesian(ylim = c(0, 5000)) +
+  scale_y_continuous(labels = comma) +
+  labs(
+    title = "Distribution of Total Incurred Claims",
+    x = "",
+    y = "Total Incurred Claims"
+  ) +
+  theme_minimal()
+
+plot3 <- ggplot(motor_clean, aes(x = loss_ratio)) +
+  geom_density(
+    fill = "lightblue",
+    alpha = 0.6
+  ) +
+  coord_cartesian(xlim = c(0, 3)) +
+  labs(
+    title = "Density Plot of Loss Ratio",
+    x = "Loss Ratio",
+    y = "Density"
+  ) +
+  theme_minimal()
+
+plot4 <- ggplot(motor_clean, aes(x = "", y = claim_severity)) +
+  geom_violin(fill = "lightblue", alpha = 0.6, na.rm = TRUE) +
+  geom_boxplot(width = 0.15, fill = "white", outlier.alpha = 0.2, na.rm = TRUE) +
+  coord_cartesian(ylim = c(0, 5000)) +
+  scale_y_continuous(labels = comma) +
+  labs(
+    title = "Distribution of Claim Severity",
+    x = "",
+    y = "Claim Severity"
+  ) +
+  theme_minimal()
+
+plot5 <- ggplot(motor_clean,
+             aes(x = claim_frequency)) +
+
+  geom_density(
+    fill = "lightblue",
+    alpha = 0.6
+  ) +
+
+  coord_cartesian(xlim = c(0, 5)) +
+
+  labs(
+    title = "Density Plot of Claim Frequency",
+    x = "Claim Frequency",
+    y = "Density"
+  ) +
+
+  theme_minimal()
+
+combined_plot <- 
+  (plot1 + plot2) /
+  (plot3 + plot4) /
+  (plot5 + patchwork::plot_spacer())
+
+ggsave(
+  "images/Numerical Variables.png",
+  plot = combined_plot,
+  width = 10,
+  height = 9,
+  dpi = 300
+)
+
+```
+
+:::::: columns
+::: {.column width="60%"}
+![](images/Numerical%20Variables.png){width="90%"}
+:::
+
+:::: {.column width="40%"}
+::: {style="font-size: 50%;"}
+<br><br>
+
+### Key Findings
+
+- Total premium distribution is highly right-skewed
+
+- Majority of claims are relatively small
+
+- Severe claims create long-tail risk exposure
+
+- Loss ratios are generally concentrated at lower values
+
+### Implication
+
+Portfolio appears broadly profitable but exposed to extreme claim events
+:::
+::::
+::::::
+
+::: footer
+[📄 Numerical Variables](TH_EX01_2.html#numerical-variables)
+:::
+
+::: notes
+The univariate analysis shows that financial variables such as total premium, total incurred claims, and claim severity are positively skewed. Most policies generate moderate premium values and relatively small claims. However, a smaller number of policies produce exceptionally large claims, resulting in significant portfolio volatility and underwriting risk exposure. The loss ratio distribution indicates that most policies remain profitable, although a minority of high-loss policies contribute disproportionately to financial uncertainty.
+:::
+
+## [Univariate Visual Analysis: Portfolio Composition]{style="font-size:0.8em;"}
+
+```{r}
+plot1 <- ggplot(motor_clean, aes(x = policy_type)) +
+  geom_bar(fill = "lightblue") +
+  labs(
+    title = "Distribution of Policy Type",
+    x = "Policy Type",
+    y = "Number of Policies"
+  ) +
+  theme_minimal() +
+
+  theme(
+    plot.subtitle = element_text(
+      size = 10,
+      lineheight = 0.8
+    )
+  )
+
+plot2 <- ggplot(motor_clean, aes(x = business_type)) +
+  geom_bar(fill = "lightblue") +
+  labs(
+    title = "Distribution of Business Type",
+    subtitle = "NB = New Business, P = Portfolio",
+    x = "Business Type",
+    y = "Number of Policies"
+  ) +
+  theme_minimal()
+
+plot3 <- ggplot(motor_clean,
+       aes(x = policy_status)) +
+
+  geom_bar(fill = "lightblue") +
+
+  scale_y_continuous(labels = scales::comma) +
+
+  labs(
+    title = "Distribution of Policy Status",
+    subtitle = "A = Active Policy, C = Cancelled Policy",
+    x = "Policy Status",
+    y = "Number of Policies"
+  ) +
+
+  theme_minimal()
+
+plot4 <- ggplot(motor_clean,
+       aes(x = profitability_group)) +
+
+  geom_bar(fill = "lightblue") +
+
+  scale_y_continuous(labels = scales::comma) +
+
+  labs(
+    title = "Distribution of Profitability Group",
+    x = "Profitability Group",
+    y = "Number of Policies"
+  ) +
+
+  theme_minimal()
+
+plot5 <- ggplot(
+  motor_clean %>%
+    filter(!is.na(high_risk)),
+  aes(x = high_risk)
+) +
+
+  geom_bar(fill = "lightblue") +
+
+  scale_y_continuous(labels = scales::comma) +
+
+  labs(
+    title = "Distribution of High-Risk Policies",
+    x = "Risk Category",
+    y = "Number of Policies"
+  ) +
+
+  theme_minimal()
+
+combined_plot <- 
+  (plot1 + plot2) /
+  (plot3 + plot4) /
+  (plot5 + patchwork::plot_spacer())
+
+ggsave(
+  "images/Numerical Variables-01.png",
+  plot = combined_plot,
+  width = 10,
+  height = 9,
+  dpi = 300
+)
+
+```
+
+:::::: columns
+::: {.column width="60%"}
+![](images/Numerical%20Variables-01.png){width="90%"}
+:::
+
+:::: {.column width="40%"}
+::: {style="font-size: 50%;"}
+<br><br>
+
+### Portfolio Characteristics
+
+- CC policies dominate the portfolio
+
+- New business policies exceed portfolio renewals
+
+- Most policies remain active
+
+- Majority of policies are classified as profitable
+
+### Implication
+
+Portfolio is concentrated in selected products and customer segments
+:::
+::::
+::::::
+
+::: footer
+[📄 Categorical Variables](TH_EX01_2.html#categorical-variables)
+:::
+
+::: notes
+The portfolio composition analysis shows that CC policy types account for the largest share of the insurance portfolio, followed by COMP_E policies. New business policies significantly outnumber portfolio renewals, suggesting strong acquisition activity but also potential underwriting uncertainty associated with newer customers. Most policies remain active and profitable overall, indicating relatively stable underwriting performance across the portfolio.
+:::
+
+## [Bivariate Visual Analysis: Claim Severity by Driver Age]{style="font-size:0.7em;"}
+
+:::::: columns
+::: {.column width="65%"}
+```{r}
+#| echo: false
+#| fig-width: 8
+#| fig-height: 6
+
+ggplot(motor_clean,
+       aes(x = driver_age_group,
+           y = claim_severity,
+           fill = driver_age_group)) +
+
+  geom_violin(alpha = 0.5) +
+
+  geom_boxplot(
+    width = 0.1,
+    outlier.alpha = 0.2,
+    fill = "white"
+  ) +
+
+  coord_cartesian(ylim = c(0, 5000)) +
+
+  labs(
+    title = "Claim Severity by Driver Age Group",
+    subtitle =
+      "Comparison of average claim costs across driver age segments",
+    x = "Driver Age Group",
+    y = "Claim Severity"
+  ) +
+
+  theme_minimal() +
+
+  theme(
+    legend.position = "none"
+  )
+
+```
+:::
+
+:::: {.column width="35%"}
+::: {style="font-size: 50%;"}
+<br><br>
+
+### Key Findings
+
+- Senior drivers exhibit slightly higher claim severity
+
+- Young drivers show greater variability and outliers
+
+- Adult drivers appear comparatively more stable
+
+### Implication
+
+Driver age influences underwriting risk and claims cost behaviour
+:::
+::::
+::::::
+
+::: footer
+[📄 Claim Severity VS Driver Age Group](TH_EX01_2.html#claim-severity)
+:::
+
+::: notes
+The violin plot comparing claim severity across driver age groups shows that senior drivers generally experience slightly higher claim severity and broader variability. Young drivers also demonstrate several extreme outliers and inconsistent claims behaviour. Adult drivers appear relatively more stable in terms of claim cost distribution. These findings suggest that driver age should remain an important variable within underwriting and pricing models.
+:::
+
+## [Bivariate Visual Analysis: Premium vs Claims]{style="font-size:0.8em;"}
+
+:::::: columns
+::: {.column width="60%"}
+```{r}
+#| echo: false
+#| fig-width: 8
+#| fig-height: 6
+
+ggplot(motor_clean,
+       aes(x = total_premium,
+           y = total_incurred)) +
+
+  geom_point(
+    alpha = 0.2,
+    color = "lightblue"
+  ) +
+
+  geom_smooth(
+    method = "lm",
+    se = FALSE,
+    color = "red"
+  ) +
+
+  coord_cartesian(
+    xlim = c(0, 3000),
+    ylim = c(0, 5000)
+  ) +
+
+  scale_x_continuous(labels = scales::comma) +
+
+  scale_y_continuous(labels = scales::comma) +
+
+  labs(
+    title = "Total Premium vs Total Incurred Claims",
+    subtitle =
+      "Relationship between premium collected and claims incurred",
+    x = "Total Premium",
+    y = "Total Incurred Claims"
+  ) +
+
+  theme_minimal()
+
+```
+:::
+
+:::: {.column width="40%"}
+::: {style="font-size: 50%;"}
+<br><br>
+
+### Key Findings
+
+- Positive relationship between premium and incurred claims
+
+- Significant variability around regression line
+
+- Premium alone does not fully explain claims behaviour
+
+### Implication
+
+Multiple factors influence underwriting risk exposure
+:::
+::::
+::::::
+
+::: footer
+[📄 Total Premium VS Total Incurred Claims](TH_EX01_2.html#total-premium)
+:::
+
+::: notes
+The scatter plot demonstrates a positive relationship between total premium and total incurred claims, which is expected since higher-risk policies are generally charged higher premiums. However, the large dispersion around the regression line indicates that premium alone cannot fully explain claims behaviour. Other variables such as policy type, customer risk profile, and exposure characteristics likely contribute significantly to underwriting performance and claims volatility.
+:::
+
+## [Bivariate Visual Analysis: Risky Segments]{style="font-size:0.8em;"}
+
+:::::: columns
+::: {.column width="70%"}
+```{r}
+#| fig-width: 17
+#| fig-height: 12
+
+heatmap_data <- motor_clean %>%
+  group_by(policy_type, business_type) %>%
+  summarise(
+    avg_loss_ratio = mean(loss_ratio, na.rm = TRUE),
+  )
+
+plot1 <- ggplot(
+  heatmap_data,
+  aes(
+    x = business_type,
+    y = policy_type,
+    fill = avg_loss_ratio
+  )
+) +
+
+  geom_tile(color = "white") +
+
+  scale_fill_gradient(
+    low = "lightblue",
+    high = "darkred"
+  ) +
+
+  labs(
+    title = "Average Loss Ratio Heatmap",
+    subtitle =
+      "Darker colours indicate higher average loss ratios",
+    x = "Business Type",
+    y = "Policy Type",
+    fill = "Avg Loss Ratio"
+  ) +
+
+  theme_minimal() +
+    theme(
+    axis.text = element_text(size = 22),
+    axis.title = element_text(size = 24),
+    plot.title = element_text(size = 28),
+    plot.subtitle = element_text(size = 18),
+    legend.title = element_text(size = 16),
+    legend.text = element_text(size = 14)
+  )
+
+
+treemap_data <- motor_clean %>%
+  group_by(policy_type) %>%
+  summarise(
+    total_premium_sum = sum(total_premium, na.rm = TRUE),
+    avg_loss_ratio = mean(loss_ratio, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+plot2 <- ggplot(
+  treemap_data,
+  aes(
+    area = total_premium_sum,
+    fill = avg_loss_ratio,
+    label = policy_type
+  )
+) +
+  geom_treemap() +
+  geom_treemap_text(
+    colour = "white",
+    place = "centre",
+    grow = TRUE
+  ) +
+  scale_fill_gradient(
+    low = "lightblue",
+    high = "darkred"
+  ) +
+  labs(
+    title = "Treemap of Total Premium by Policy Type",
+    subtitle = "Rectangle size represents total premium volume;\n colour represents average loss ratio",
+    fill = "Avg Loss Ratio"
+  ) +
+  theme_minimal() +
+    theme(
+    axis.text = element_text(size = 22),
+    axis.title = element_text(size = 24),
+    plot.title = element_text(size = 28),
+    plot.subtitle = element_text(size = 18),
+    legend.title = element_text(size = 16),
+    legend.text = element_text(size = 14)
+  )
+
+combined_plot <- plot1 + plot2
+
+ggsave(
+  "images/Numerical Variables-02.png",
+  plot = combined_plot,
+  width = 18,
+  height = 9,
+  dpi = 300
+)
+
+```
+
+![](images/Numerical%20Variables-02.png){width="90%"}
+:::
+
+:::: {.column width="30%"}
+::: {style="font-size: 45%;"}
+<br>
+
+### Heatmap & Treemap Findings
+
+- COMP_N under business type P shows highest average loss ratio
+
+- CC policies demonstrate stronger profitability
+
+- Smaller segments may still generate disproportionate risk
+
+### Implication
+
+Underwriting profitability differs substantially across portfolio segments
+:::
+::::
+::::::
+
+::: footer
+[📄 Average Loss Ratio by Policy Type and Business Type](TH_EX01_2.html#average-loss)
+:::
+
+::: notes
+The heatmap and treemap analyses reveal substantial differences in profitability across policy and business type combinations. COMP_N policies under business type P exhibit the highest average loss ratios, suggesting elevated underwriting risk and weaker profitability performance. In contrast, CC policies generally maintain lower loss ratios and stronger profitability. These findings highlight the importance of segment-specific underwriting controls and pricing strategies.
+:::
+
+## [Multivariate Analysis: Correlation and Cluster Patterns]{style="font-size:0.7em;"}
+
+```{r}
+corr_data <- motor_clean %>%
+  select(
+    total_premium,
+    total_incurred,
+    loss_ratio,
+    claim_frequency,
+    claim_severity,
+    underwriting_profit
+  )
+
+corr_matrix <- cor(
+  corr_data,
+  use = "complete.obs"
+)
+
+plot_corr <- as.ggplot(function() {
+
+  corrplot(
+    corr_matrix,
+
+    method = "color",
+    type = "upper",
+
+    # remove diagonal
+    diag = TRUE,
+
+    # correlation numbers
+    addCoef.col = "black",
+    number.cex = 0.8,
+
+    # variable names
+    tl.col = "black",
+    tl.cex = 1,
+    tl.srt = 35,
+
+    # move labels inward slightly
+    tl.offset = 0.5,
+
+    # reduce whitespace
+    mar = c(0,0,1,0),
+
+    col = colorRampPalette(
+      c("#A9D3E0", "#B79A95", "#B30000")
+    )(200)
+  )
+
+})
+  
+set.seed(123)
+
+cluster_data <- motor_clean %>%
+  select(
+    loss_ratio,
+    claim_frequency,
+    claim_severity,
+    underwriting_profit
+  ) %>%
+  na.omit() %>%
+  sample_n(3000)
+
+scaled_data <- scale(cluster_data)
+
+kmeans_result <- kmeans(
+  scaled_data,
+  centers = 3,
+  nstart = 25
+)
+
+plot_cluster <- fviz_cluster(
+  kmeans_result,
+  data = scaled_data,
+  geom = "point",
+  ellipse.type = "norm",
+  palette = c(
+    "#F4A6A6",   # soft pink
+    "#63D28A",   # soft green
+    "#7DA7F7"    # soft blue
+  ),
+  ggtheme = theme_minimal()
+)
+
+```
+
+```{r}
+combined_multi <- 
+  (plot_corr | plot_cluster) +
+  plot_layout(widths = c(1.15, 1))
+
+```
+
+```{r}
+#| echo: false
+#| fig-width: 15
+#| fig-height: 6
+
+combined_multi
+
+```
+
+::: {style="font-size: 50%;"}
+### Key Findings
+
+- Claim severity and total incurred claims are strongly related
+
+- Underwriting profit decreases as claims increase
+
+- Cluster analysis identifies distinct risk segments
+:::
+
+::: footer
+[📄 Correlation Heatmap](TH_EX01_2.html#correlation-heatmap)
+:::
+
+::: notes
+The correlation heatmap reveals strong positive relationships between total incurred claims, claim severity, and loss ratio, indicating that severe claims are major contributors to underwriting volatility. Underwriting profit shows strong negative relationships with incurred claims and loss ratio, suggesting that profitability deteriorates rapidly when claim costs increase. The cluster analysis further highlights the presence of distinct policy segments within the portfolio. While the majority of policies appear relatively stable and profitable, smaller clusters exhibit significantly higher claim severity and poorer underwriting performance. These findings suggest that portfolio risk is concentrated within specific groups rather than being evenly distributed across all policies.
+:::
+
+## [Multivariate Analysis: Pairwise Relationships]{style="font-size:0.8em;"}
+
+:::::: columns
+::: {.column width="70%"}
+```{r}
+options(scipen = 999)
+
+pair_data <- motor_clean %>%
+  select(
+    total_incurred,
+    loss_ratio,
+    claim_severity
+  ) %>%
+  na.omit() %>%
+  sample_n(1000)
+
+plot_pairs <- GGally::ggpairs(
+  pair_data,
+  upper = list(
+    continuous = GGally::wrap("cor", size = 4)
+  ),
+  lower = list(
+    continuous = GGally::wrap("points", alpha = 0.4, size = 0.6)
+  ),
+  diag = list(
+    continuous = GGally::wrap("densityDiag")
+  )
+) +
+theme(
+  text = element_text(size = 10),
+  axis.text.y = element_text(size = 7),
+  axis.text.x = element_text(size = 7),
+  plot.margin = margin(15, 15, 15, 50)
+)
+
+```
+
+```{r}
+#| echo: false
+#| fig-width: 8
+#| fig-height: 7
+
+plot_pairs
+
+```
+:::
+
+:::: {.column width="30%"}
+::: {style="font-size: 50%;"}
+<br><br>
+
+### Key Findings
+
+- Numerical variables are highly right-skewed
+
+- Total incurred claims is strongly associated with loss ratio and claim severity
+
+- Premium alone does not fully explain claims behaviour
+:::
+::::
+::::::
+
+::: footer
+[📄 Pairwise Relationship Analysis](TH_EX01_2.html#pairwise)
+:::
+
+::: notes
+The pairwise relationship analysis highlights several important behavioural patterns among the numerical variables. Most variables display highly right-skewed distributions, where a large proportion of policies generate relatively low claim amounts while a smaller number of extreme cases contribute disproportionately large losses. Strong positive relationships are observed between total incurred claims, claim severity, and loss ratio, reinforcing the importance of claim severity as a key profitability driver. In contrast, total premium demonstrates weaker relationships with claims-related variables, suggesting that premium size alone may not adequately capture underlying risk exposure. These findings indicate that insurers should incorporate additional risk indicators beyond premium values when evaluating portfolio profitability and underwriting performance.
+:::
+
+## [Regression Analysis of Profitability Drivers]{style="font-size:0.8em;"}
+
+::: {style="font-size: 70%;"}
+| Variable        | Coefficient | p-value | Impact   |
+|-----------------|-------------|---------|----------|
+| Total Incurred  | Negative    | \<0.001 | Strong   |
+| Loss Ratio      | Negative    | \<0.001 | Strong   |
+| Claim Frequency | Negative    | \<0.001 | Moderate |
+| Claim Severity  | Negative    | \<0.001 | Moderate |
+:::
+
+<br>
+
+::: {style="font-size: 55%;"}
+### Key Findings
+
+- All variables are statistically significant
+
+- Total incurred claims have the strongest negative effect
+
+- Higher loss ratios significantly reduce profitability
+
+- Claim severity contributes to underwriting volatility
+:::
+
+::: footer
+[📄 Statistical Validation](TH_EX01_2.html#stats)
+:::
+
+::: notes
+The regression analysis statistically validates the key drivers influencing underwriting profitability. All selected variables were found to be statistically significant, with p-values below 0.001. Total incurred claims demonstrated the strongest negative effect on underwriting profit, indicating that higher claims costs substantially reduce portfolio profitability. Loss ratio also showed a significant negative relationship, suggesting that policies with higher claims relative to premiums contribute negatively to underwriting performance. Claim frequency and claim severity were likewise associated with lower profitability, confirming that both the occurrence and magnitude of claims influence portfolio volatility. The exceptionally high adjusted R-squared value indicates that the selected variables explain most variation in underwriting profit, strengthening the reliability of the findings derived from the earlier visual analytics.
+:::
+
+## [Business Recommendations]{style="font-size:0.8em;"}
+
+::: {style="font-size: 80%;"}
+- Strengthen underwriting controls for high-risk segments
+
+- Improve risk-based pricing models
+
+- Focus on claim severity management
+
+- Enhance portfolio segmentation
+
+- Monitor high-risk policies continuously
+:::
+
+::: footer
+[📄 Recommendations](TH_EX01_2.html#recommendations)
+:::
+
+::: notes
+Several recommendations emerge from the analysis findings. First, underwriting controls should be strengthened for high-loss segments such as COMP_N policies. Second, pricing models should better reflect customer and policy risk characteristics. Third, claim severity management should become a priority because severe claims contribute heavily to underwriting losses. Finally, continuous portfolio monitoring and advanced customer segmentation can help insurers identify deteriorating risk patterns earlier and improve overall profitability.
+:::
+
+## [Conclusion]{style="font-size:0.8em;"}
+
+::: {style="font-size: 80%;"}
+- Portfolio is generally profitable overall
+
+- Severe claims create significant volatility
+
+- Regression analysis validates claims-related variables as significant profitability drivers
+
+- Visual analytics uncovered hidden underwriting risks and risk segments
+
+### Final Takeaway
+
+Visual analytics, supported by statistical validation, provides valuable support for data-driven underwriting, pricing optimisation, and portfolio management decisions.
+:::
+
+::: footer
+[📄 Conclusion](TH_EX01_2.html#conclusion)
+:::
+
+::: notes
+Overall, the insurance portfolio demonstrates relatively stable profitability, with most policies maintaining acceptable loss ratios and underwriting performance. However, severe claims and high-risk policy segments contribute disproportionately to underwriting volatility and financial risk exposure. The regression analysis further validates that total incurred claims, loss ratio, claim frequency, and claim severity are statistically significant predictors of underwriting profit. These findings show that combining visual analytics with statistical validation strengthens the reliability of the insights and supports more targeted underwriting, pricing optimisation, and strategic portfolio management within the insurance industry.
+:::

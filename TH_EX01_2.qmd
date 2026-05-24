@@ -1,5 +1,5 @@
 ---
-title: "Take-Home Exercise 1"
+title: "Take-Home Exercise 1 Technical Report"
 author: "Goh Fang Yu"
 date: "9 May 2026"
 date-modified: "last-modified"
@@ -10,9 +10,9 @@ execute:
   freeze: true
 ---
 
-# **Visual Analytics for Data Discovery**
+# **Visual Analytics for Data Discovery: Motor Insurance Portfolio Analysis**
 
-## **1 Introduction**
+## **1 Introduction** {#introduction}
 
 Insurance companies often face challenges in identifying the underlying causes of poor profitability and high portfolio volatility. While traditional reporting tools provide summary-level insights, they may not fully reveal hidden patterns, risk drivers, or relationships within large and complex insurance datasets. As a result, insurers increasingly rely on visual analytics techniques to support more effective exploratory analysis and data-driven decision-making.
 
@@ -33,7 +33,7 @@ pacman::p_load(tidyverse, ggplot2, scales, ggdist, ggridges, ggstatsplot, DT, dp
 
 ```
 
-## **4 Data Wrangling**
+## **4 Data Wrangling** {#data-wrangling}
 
 ### 4.1 Importing the Dataset
 
@@ -148,7 +148,7 @@ motor_clean <- motor_clean %>%
 
 Univariate visual analysis was conducted to examine the individual distribution and characteristics of numerical and categorical variables within the motor insurance portfolio dataset. This analysis helps identify data patterns, concentration, skewness, outliers, and segment composition prior to performing more advanced multivariate analysis.
 
-### 5.1 Numerical Variables
+### 5.1 Numerical Variables {#numerical-variables}
 
 #### **5.1.1 Distribution of Total Premium**
 
@@ -297,7 +297,7 @@ ggplot(motor_clean,
 - The distribution also exhibits a long right tail extending toward higher claim frequency values, indicating that a smaller proportion of policyholders generate claims more frequently. These higher-frequency claimants may represent higher-risk customer segments that contribute disproportionately to portfolio volatility and claims costs. The positively skewed pattern is typical in insurance portfolios, where most customers generate limited claims activity while a small subset demonstrates repeated claim behaviour.
 :::
 
-### 5.2 Categorical Variables
+### 5.2 Categorical Variables {#categorical-variables}
 
 #### **5.2.1 Distribution of Policy Type**
 
@@ -466,7 +466,7 @@ Overall, the univariate analysis provides important insights into the underlying
 
 Bivariate visual analysis was conducted to examine the relationships and interactions between key variables within the motor insurance portfolio dataset in order to identify factors influencing profitability and claims volatility. Through the use of comparative and relationship-based visual analytics techniques, the analysis explores how variables such as policy type, business type, claim severity, loss ratio, and risk category are associated with underwriting performance and portfolio risk exposure. This helps uncover hidden patterns, segment differences, correlations, and high-risk areas that support more effective underwriting, pricing, and risk management decisions.
 
-### 6.1 Claim Severity VS Driver Age Group
+### 6.1 Claim Severity VS Driver Age Group {#claim-severity}
 
 ```{r}
 #| echo: true
@@ -511,7 +511,7 @@ ggplot(motor_clean,
 - Among the three groups, senior drivers appear to have a slightly higher median claim severity and a broader spread in the interquartile range, suggesting greater volatility and potentially higher financial risk exposure. Young drivers also demonstrate considerable variability with several high-cost outliers, while adult drivers show comparatively more stable claim severity distributions. Overall, the analysis suggests that driver age may influence claim cost behaviour and should be considered in underwriting, pricing, and risk segmentation strategies.
 :::
 
-### 6.2 Total Premium VS Total Incurred Claims
+### 6.2 Total Premium VS Total Incurred Claims {#total-premium}
 
 ```{r}
 #| echo: true
@@ -655,7 +655,7 @@ ggplot(
 - Although cancelled policies (`C`) represent a much smaller proportion of the portfolio, the presence of high-risk policies within this category may suggest that poor underwriting performance or elevated claims experience could contribute to policy cancellations. The chart also highlights that high-risk policies remain a relatively small segment overall compared to normal-risk policies, suggesting that the insurer’s portfolio is largely composed of lower-risk business exposures.
 :::
 
-### 6.5 Average Loss Ratio by Policy Type and Business Type
+### 6.5 Average Loss Ratio by Policy Type and Business Type {#average-loss}
 
 “Where are the risky combinations?”
 
@@ -769,7 +769,7 @@ Based on these findings, several additional analyses can be conducted to further
 
 ## **7 Multivariate Visual Analysis**
 
-### 7.1 Correlation Heatmap of Key Insurance Portfolio Variables
+### 7.1 Correlation Heatmap of Key Insurance Portfolio Variables {#correlation-heatmap}
 
 ```{r}
 #| echo: true
@@ -819,7 +819,7 @@ corrplot(
 - Additionally, `total_premium` exhibits only weak relationships with most variables, suggesting that premium size alone may not be a strong predictor of claims behaviour or underwriting performance. Overall, the analysis identifies claim severity and incurred claims as the most influential drivers of portfolio risk and profitability.
 :::
 
-### 7.2 Pairwise Relationship Analysis of Key Insurance Portfolio Variables
+### 7.2 Pairwise Relationship Analysis of Key Insurance Portfolio Variables {#pairwise}
 
 ```{r}
 #| echo: true
@@ -896,44 +896,75 @@ fviz_cluster(
 - Cluster 2 (green) is more widely dispersed and extends further along the positive Dim1 direction, indicating policies with greater variability and potentially higher-risk characteristics such as elevated claim severity, higher loss ratios, or reduced underwriting profitability. In contrast, Cluster 3 (blue) is separated along the negative Dim2 direction, suggesting another distinct policy segment with different claims behaviour and financial risk characteristics. Overall, the clear separation between clusters indicates that the insurance portfolio contains heterogeneous policy groups, highlighting opportunities for improved risk segmentation, pricing differentiation, and targeted underwriting strategies.
 :::
 
+### 7.4 Statistical Validation of Underwriting Profit Drivers {#stats}
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "View Code"
+model <- lm(
+  underwriting_profit ~
+    total_incurred +
+    loss_ratio +
+    claim_frequency +
+    claim_severity,
+  data = motor_clean
+)
+
+summary(model)
+
+```
+
+::: callout-tip
+### Observations:
+
+- The regression analysis indicates that all selected variables are statistically significant predictors of underwriting profit, as all p-values are below 0.001. Total incurred claims exhibit the strongest negative effect on underwriting profit, suggesting that higher claims costs substantially reduce portfolio profitability. Loss ratio also demonstrates a significant negative relationship, indicating that policies with higher claims relative to premiums contribute negatively to underwriting performance. Similarly, higher claim frequency and claim severity are associated with lower underwriting profit, confirming that both the occurrence and magnitude of claims influence portfolio volatility and profitability.
+
+- The model achieves an exceptionally high adjusted R-squared value of 0.9977, indicating that the selected variables explain nearly all variation in underwriting profit within the dataset. Overall, the findings statistically validate that claims-related variables, particularly total incurred claims and loss ratio, are the primary drivers of underwriting profitability and risk exposure in the insurance portfolio.
+:::
+
 **Overall Insights**
 
 The multivariate visual analytics revealed several important relationships influencing the profitability and volatility of the motor insurance portfolio. The correlation heatmap and pairwise relationship analysis showed that total incurred claims, claim severity, and loss ratio exhibit strong positive relationships, indicating that severe claim events are among the primary drivers of underwriting losses and portfolio volatility. In particular, claim severity demonstrated a strong negative relationship with underwriting profit, suggesting that a relatively small number of high-cost claims can significantly reduce portfolio profitability.
+
+These findings were further statistically validated through regression analysis. The regression results confirmed that total incurred claims, loss ratio, claim frequency, and claim severity are all statistically significant predictors of underwriting profit, with p-values below 0.001. Among these variables, total incurred claims showed the strongest negative effect on profitability, while higher loss ratios and claim severity also substantially reduced underwriting performance. The exceptionally high adjusted R-squared value indicates that the selected risk variables explain a large proportion of variation in underwriting profit.
 
 The heatmap and treemap analyses further highlighted that certain combinations of policy type and business type contribute disproportionately to underwriting risk. Policies under COMP_N and business type P recorded the highest average loss ratios, indicating weaker profitability performance within these segments. In contrast, CC and TP policies generally exhibited lower loss ratios and comparatively more stable underwriting outcomes.
 
 The cluster analysis revealed that the insurance portfolio can be segmented into distinct customer risk groups based on variables such as premium size, incurred claims, claim severity, and loss ratio. While the majority of policies belong to relatively stable and profitable clusters, a smaller group of policies demonstrates substantially higher claims severity and underwriting volatility. These findings suggest that portfolio risk is concentrated within specific high-risk segments rather than being evenly distributed across all policies.
 
-Overall, the analysis indicates that underwriting profitability is influenced not only by premium size, but also by the interaction between policy type, customer risk profile, claim severity, and claims behaviour. The results demonstrate the value of visual analytics in uncovering hidden risk concentrations and supporting more targeted underwriting and portfolio management strategies.
+Overall, the analysis indicates that underwriting profitability is influenced not only by premium size, but also by the interaction between policy type, customer risk profile, claim severity, and claims behaviour. The results demonstrate the value of combining visual analytics with statistical validation techniques to uncover hidden risk concentrations and support more targeted underwriting, pricing, and portfolio management strategies.
 
-## **8 Recommendations to Increase Profitability and Reduce Losses**
+## **8 Recommendations to Increase Profitability and Reduce Losses** {#recommendations}
 
 Based on the visual analytics findings, several strategies may help improve portfolio profitability and reduce underwriting volatility.
 
-### 1. Strengthen Underwriting Controls for High-Risk Segments
+### Strengthen Underwriting Controls for High-Risk Segments
 
 Policy segments such as COMP_N under business type P exhibited relatively high average loss ratios and may require closer underwriting review. The insurer could introduce stricter risk assessment criteria, tighter acceptance thresholds, or enhanced customer screening for these segments.
 
-### 2. Improve Pricing and Risk-Based Premium Allocation
+### Improve Pricing and Risk-Based Premium Allocation
 
 The strong relationship between incurred claims, claim severity, and underwriting losses suggests that certain high-risk policies may not be priced adequately relative to their expected claims exposure. Risk-based pricing models incorporating driver age, claims behaviour, and policy characteristics could help better align premiums with underlying risk levels.
 
-### 3. Focus on Claim Severity Management
+### Focus on Claim Severity Management
 
 Since severe claims contribute disproportionately to underwriting losses, the insurer should prioritise claim severity management through fraud detection, early claims intervention, repair cost controls, and enhanced claims investigation procedures. Reducing large claim events may significantly improve overall portfolio profitability.
 
-### 4. Enhance Portfolio Segmentation
+### Enhance Portfolio Segmentation
 
 The cluster analysis demonstrates that policyholders can be segmented into distinct behavioural and risk groups. Leveraging advanced segmentation techniques may allow the insurer to design more targeted underwriting, pricing, and retention strategies for different customer segments.
 
-### 5. Monitor High-Risk Policies Continuously
+### Monitor High-Risk Policies Continuously
 
 Although high-risk policies form a relatively small proportion of the portfolio, they contribute disproportionately to volatility and losses. Continuous monitoring using visual analytics dashboards and predictive models may help identify deteriorating risk segments earlier and support proactive risk mitigation decisions.
 
-## **9 Conclusion**
+## **9 Conclusion** {#conclusion}
 
 This study demonstrates how visual analytics techniques can provide meaningful insights into the profitability and volatility of a motor insurance portfolio beyond conventional dashboard reporting. Through the application of univariate, bivariate, and multivariate visual analytics methods, the analysis successfully identified important patterns, relationships, and risk concentrations within the dataset.
 
 The findings reveal that the portfolio is generally profitable overall, with most policies maintaining manageable loss ratios and stable underwriting performance. However, a smaller number of high-risk policies and severe claim events contribute disproportionately to underwriting volatility and financial losses. Variables such as claim severity, policy type, business type, and customer risk characteristics were found to significantly influence portfolio profitability.
 
-The use of visual analytics techniques including heatmaps, treemaps, correlation analysis, pairwise relationship plots, and clustering enabled the identification of hidden relationships and high-risk portfolio segments that may not be easily observable through traditional reporting methods. These insights may support insurers in improving underwriting strategy, pricing optimisation, risk segmentation, and claims management practices.
+These visual findings were further supported through statistical validation using regression analysis. The regression results confirmed that total incurred claims, loss ratio, claim frequency, and claim severity are statistically significant predictors of underwriting profit, with all variables demonstrating strong significance levels. In particular, total incurred claims and loss ratio exhibited the strongest negative impact on profitability, reinforcing the conclusion that claims-related factors are the primary drivers of underwriting volatility and financial performance.
+
+The use of visual analytics techniques including heatmaps, treemaps, correlation analysis, pairwise relationship plots, clustering, and regression analysis enabled the identification of hidden relationships and high-risk portfolio segments that may not be easily observable through traditional reporting methods. These insights may support insurers in improving underwriting strategy, pricing optimisation, risk segmentation, and claims management practices, ultimately contributing to more sustainable portfolio profitability and enhanced risk management decisions.
