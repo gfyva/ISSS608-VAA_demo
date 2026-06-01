@@ -39,6 +39,9 @@ website:
         href: "TH_EX01_1.html"
       - text: "Technical Report"
         href: "TH_EX01_2.html"
+    - text: "Take-Home Exercise 2"
+      href: "MC1.html"
+        
     right:
       - href: index.qmd
         text: Home
