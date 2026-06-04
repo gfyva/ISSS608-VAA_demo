@@ -97,3 +97,46 @@ Here's documenting my course journey:
 
   - Sunburst diagram
 :::
+
+::: {.callout collapse="true" title="▶ Lesson 7a: Visualising and Analysing Network Data"}
+- Introduction to Graph Data Visualisation
+  - Basic principles of network graph
+  - Graph data visualisation in actions
+- Network Graph Data
+  - Network data sets
+  - Graph data format
+  - Graph Database
+- Network Graph Visualisation Tools
+- Designer toolkit
+  - Gephi
+- Programmer toolkit
+  - R packages
+- Graph layouts
+  - Node-and-link layouts
+  - Force-directed layout
+  - Node-only layout
+  - Adjacency matrix
+- Visual Attributes
+  - Key node attributes
+  - Key edge attributes
+  - Bundles, shapes, images, and more
+- Visual Analysis of Network Graphs
+  - Relationships
+  - Hierarchies
+  - Communities
+- Flows
+- Spatial networks
+:::
+
+::: {.callout collapse="true" title="▶ Lesson 7b: Visualising and Analysing Text Data"}
+- Introduction to text data and text visualisation
+- Text Visualisation methods:
+  - Tag Cloud
+  - Wordle
+  - Word Tree
+  - Phrase Nets
+- Text Visualisation in R
+  - textplot
+  - LDAVis
+  - quanteda
+:::
