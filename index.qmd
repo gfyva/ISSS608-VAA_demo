@@ -140,3 +140,20 @@ Here's documenting my course journey:
   - LDAVis
   - quanteda
 :::
+
+::: {.callout collapse="true" title="▶ Lesson 8: Visualising and Analysing Time-Oriented Data"}
+- Characteristics of time-series data
+- A short visual history of time-series graphs
+- Time-series patterns
+- Time-series data visualization Methods
+  - Line graph
+  - Control chart
+  - Slopegraph
+  - Cycle plot
+  - Horizon graph
+  - Sunburst diagram
+  - Calendar Heatmap
+  - Stream Graph
+- Interactive techniques for time-series data visualisation
+- Animation techniques for time-series visualisation
+:::
