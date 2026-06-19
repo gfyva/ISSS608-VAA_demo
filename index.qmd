@@ -157,3 +157,14 @@ Here's documenting my course journey:
 - Interactive techniques for time-series data visualisation
 - Animation techniques for time-series visualisation
 :::
+
+::: {.callout collapse="true" title="▶ Lesson 9: Visualising and Analysing Geographic Data"}
+- Introducing map
+- Properties of geographical data
+- Typology of map
+- Thematic mapping techniques
+  - Proportional symbol map
+  - Choropleth map
+  - Data Classification
+- Alternative mapping techniques
+:::
