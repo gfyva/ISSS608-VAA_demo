@@ -45,6 +45,8 @@ website:
         href: "HO_EX09_2.html"
       - text: "Hands-on Exercise 9 Part 3  130626"
         href: "HO_EX09_3.html"
+      - text: "Hands-on Exercise 10  200626 "
+        href: "HO_EX10.html"
     - text: "Take-Home Exercise 1"
       menu:
       - text: "Quarto Presentation"

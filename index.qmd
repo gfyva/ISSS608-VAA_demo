@@ -168,3 +168,13 @@ Here's documenting my course journey:
   - Data Classification
 - Alternative mapping techniques
 :::
+
+::: {.callout collapse="true" title="▶ Lesson 10: Information Dashboard Design"}
+- Introducing information dashboard
+- Information dashboard design best practices
+- Common mistakes in dashboard design
+- Ideal graphs for information dashboard
+  - Bullet graph
+  - Sparklines
+  - Bandlines
+:::
